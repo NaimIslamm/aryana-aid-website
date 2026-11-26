@@ -1,0 +1,1628 @@
+/**
+ * Aryana Aid Donation System Styles
+ * Modern, responsive, clean Muslim Aid / Aryana Aid branding
+ */
+
+:root {
+    --ads-green: #348a5b;
+    --ads-green-dark: #236541;
+    --ads-emerald: #007a3d;
+    --ads-magenta: #d81b60;
+    --ads-magenta-dark: #c2185b;
+    --ads-text-dark: #23272a;
+    --ads-text-muted: #64748b;
+    --ads-border: #e2e8f0;
+    --ads-bg-light: #f8fafc;
+    --ads-card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+}
+
+/* Base Wrapper */
+.aryana-donation-wrapper,
+.ads-wrapper {
+    font-family: 'Outfit', 'Barlow', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--ads-text-dark);
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+.aryana-donation-wrapper *, .aryana-donation-wrapper *::before, .aryana-donation-wrapper *::after,
+.ads-wrapper *, .ads-wrapper *::before, .ads-wrapper *::after {
+    box-sizing: inherit;
+}
+
+/* ==========================================================================
+   1. MASTER DONATION FORM (/donate/)
+   ========================================================================== */
+.ads-master-container {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: var(--ads-card-shadow);
+    border: 1px solid var(--ads-border);
+    overflow: hidden;
+}
+
+/* Tabs */
+.ads-frequency-tabs {
+    display: flex;
+    background: #f1f5f9;
+    border-bottom: 2px solid var(--ads-border);
+}
+.ads-tab-btn {
+    flex: 1;
+    padding: 16px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--ads-text-muted);
+    transition: all 0.25s ease;
+    text-align: center;
+    position: relative;
+}
+.ads-tab-btn.active {
+    background: #ffffff;
+    color: var(--ads-green);
+    box-shadow: 0 -2px 0 var(--ads-green) inset;
+}
+.ads-tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--ads-green);
+}
+
+/* Donation Body */
+.ads-form-body {
+    padding: 30px;
+}
+@media (max-width: 768px) {
+    .ads-form-body {
+        padding: 18px;
+    }
+}
+
+/* Multi-Item Basket Rows */
+.ads-basket-table {
+    width: 100%;
+    margin-bottom: 25px;
+}
+.ads-basket-row {
+    display: grid;
+    grid-template-columns: 2.2fr 1.5fr 1.5fr 1.1fr 1.8fr 45px;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--ads-border);
+}
+@media (max-width: 900px) {
+    .ads-basket-row {
+        grid-template-columns: 1fr 1fr;
+        background: var(--ads-bg-light);
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        border: 1px solid var(--ads-border);
+    }
+    .ads-basket-row .ads-field-comments {
+        grid-column: span 2;
+    }
+    .ads-basket-row .ads-row-remove {
+        grid-column: span 2;
+        text-align: right;
+    }
+}
+.ads-basket-header {
+    display: grid;
+    grid-template-columns: 2.2fr 1.5fr 1.5fr 1.1fr 1.8fr 45px;
+    gap: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ads-green);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+@media (max-width: 900px) {
+    .ads-basket-header {
+        display: none;
+    }
+}
+
+/* Form Controls */
+.ads-control-wrap {
+    display: flex;
+    flex-direction: column;
+}
+.ads-control-wrap label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ads-text-muted);
+    margin-bottom: 4px;
+}
+.ads-select, .ads-input {
+    width: 100%;
+    height: 42px;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: var(--ads-text-dark);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.ads-select:focus, .ads-input:focus {
+    border-color: var(--ads-green);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 138, 91, 0.15);
+}
+
+.ads-amount-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.ads-amount-prefix {
+    position: absolute;
+    left: 10px;
+    font-weight: 700;
+    color: var(--ads-green);
+}
+.ads-amount-input {
+    padding-left: 24px !important;
+    font-weight: 700;
+}
+
+/* Remove Row Button */
+.ads-btn-remove {
+    background: #fee2e2;
+    color: #ef4444;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.ads-btn-remove:hover {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+/* Basket Action Bar */
+.ads-basket-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--ads-border);
+}
+.ads-btn-add {
+    background: var(--ads-green);
+    color: #ffffff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+}
+.ads-btn-add:hover {
+    background: var(--ads-green-dark);
+}
+
+/* Summary & Totals */
+.ads-totals-card {
+    background: var(--ads-bg-light);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 1px solid var(--ads-border);
+}
+.ads-total-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    padding: 6px 0;
+}
+.ads-grand-total {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ads-green);
+    border-top: 2px solid var(--ads-border);
+    padding-top: 12px;
+    margin-top: 8px;
+}
+
+/* Addons: Admin Fee & Gift Aid */
+.ads-addon-box {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+.ads-addon-box.active {
+    border-color: var(--ads-green);
+    background: #f0fdf4;
+}
+.ads-addon-box input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--ads-green);
+    margin-top: 2px;
+    cursor: pointer;
+}
+.ads-addon-title {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+.ads-addon-desc {
+    font-size: 13px;
+    color: var(--ads-text-muted);
+}
+
+/* Donor Details Section */
+.ads-section-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--ads-text-dark);
+    margin: 30px 0 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.ads-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+@media (max-width: 600px) {
+    .ads-form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.ads-grid-full {
+    grid-column: span 2;
+}
+@media (max-width: 600px) {
+    .ads-grid-full {
+        grid-column: span 1;
+    }
+}
+
+/* Payment Methods */
+.ads-payment-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.ads-pay-method-btn {
+    border: 2px solid var(--ads-border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    background: #ffffff;
+    cursor: pointer;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 15px;
+    transition: all 0.2s;
+}
+.ads-pay-method-btn.active {
+    border-color: var(--ads-green);
+    background: #f0fdf4;
+    color: var(--ads-green);
+}
+
+.ads-card-inputs-box {
+    background: var(--ads-bg-light);
+    border: 1px solid var(--ads-border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+/* Submit Button */
+.ads-btn-submit {
+    width: 100%;
+    background: var(--ads-green);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 18px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(52, 138, 91, 0.35);
+}
+.ads-btn-submit:hover {
+    background: var(--ads-green-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(52, 138, 91, 0.45);
+}
+
+
+/* ==========================================================================
+   2. QUICK DONATE BAR (IMAGE 2)
+   ========================================================================== */
+/* ==========================================================================
+   2. QUICK DONATE HERO WIDGET (TWO-BOX CARD)
+   ========================================================================== */
+.ads-quick-hero-wrapper {
+    width: 100%;
+    margin: 15px auto;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    box-sizing: border-box;
+}
+.ads-quick-hero-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 22px;
+    align-items: stretch;
+    box-sizing: border-box;
+    text-align: left;
+}
+.ads-quick-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
+}
+.ads-quick-col-left {
+    border-right: 1px solid #edf2f7;
+    padding-right: 22px;
+}
+@media (max-width: 860px) {
+    .ads-quick-col-left {
+        border-right: none;
+        border-bottom: 1px solid #edf2f7;
+        padding-right: 0;
+        padding-bottom: 18px;
+    }
+}
+.ads-quick-col-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2px;
+}
+.ads-quick-step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: #007a3d;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: 50%;
+}
+.ads-quick-col-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.2px;
+}
+.ads-quick-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.ads-quick-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+}
+.ads-quick-select-wrap {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.ads-quick-hero-card .ads-quick-select {
+    width: 100%;
+    height: 48px;
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    color: #0f172a;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 10px 42px 10px 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+    font-family: inherit;
+    line-height: normal;
+}
+.ads-quick-hero-card .ads-quick-select:focus {
+    border-color: #038B5C;
+    background: #ffffff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(3, 139, 92, 0.15);
+}
+.ads-quick-hero-card .ads-quick-select option {
+    background: #ffffff;
+    color: #0f172a;
+    font-weight: 600;
+    font-size: 14.5px;
+    padding: 10px;
+}
+.ads-quick-select-arrow {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ads-quick-select-arrow svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    fill: #038B5C;
+}
+.ads-quick-freq-tabs {
+    display: flex;
+    background: #f1f5f9;
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    gap: 4px;
+    box-sizing: border-box;
+}
+.ads-quick-hero-card .ads-quick-freq-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border: none !important;
+    border-radius: 6px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #64748b !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none !important;
+    line-height: normal;
+}
+.ads-quick-hero-card .ads-quick-freq-btn:hover {
+    color: #0f172a !important;
+    background: rgba(0, 0, 0, 0.04) !important;
+}
+.ads-quick-hero-card .ads-quick-freq-btn.active {
+    background: #038B5C !important;
+    background-color: #038B5C !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(3, 139, 92, 0.25) !important;
+}
+.ads-quick-fields-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+.ads-quick-amount-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.ads-quick-currency-symbol {
+    position: absolute;
+    left: 14px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #0f172a;
+    pointer-events: none;
+}
+.ads-quick-hero-card .ads-quick-amount-input {
+    width: 100%;
+    height: 46px;
+    background: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    color: #0f172a;
+    font-size: 16px;
+    font-weight: 800;
+    border-radius: 8px;
+    padding-left: 32px;
+    padding-right: 12px;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+.ads-quick-hero-card .ads-quick-amount-input:focus {
+    border-color: #007a3d;
+    background: #ffffff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 122, 61, 0.15);
+}
+.ads-quick-submit-btn {
+    width: 100%;
+    height: 46px;
+    background: #D8005A;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(216, 0, 90, 0.28);
+    transition: all 0.2s ease;
+}
+.ads-quick-submit-btn:hover {
+    background: #be004f;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(216, 0, 90, 0.35);
+}
+.ads-quick-submit-btn svg {
+    transition: transform 0.2s ease;
+}
+.ads-quick-submit-btn:hover svg {
+    transform: translateX(3px);
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVE COMPACT MODE (Prevents taking full VH)
+   ========================================================================== */
+@media (max-width: 860px) {
+    .ads-quick-hero-wrapper {
+        margin: 6px auto !important;
+        padding: 0 4px !important;
+    }
+    .ads-quick-hero-card {
+        grid-template-columns: 1fr !important;
+        padding: 10px 12px !important;
+        gap: 8px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+    }
+    .ads-quick-col {
+        gap: 6px !important;
+    }
+    .ads-quick-col-left {
+        border-right: none !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        padding-right: 0 !important;
+        padding-bottom: 6px !important;
+    }
+    .ads-quick-col-header {
+        display: none !important; /* Hide large step headers on mobile to dramatically reduce height */
+    }
+    .ads-quick-field-group {
+        gap: 2px !important;
+    }
+    .ads-quick-label {
+        font-size: 10px !important;
+        letter-spacing: 0.3px !important;
+        margin-bottom: 1px !important;
+    }
+    .ads-quick-hero-card .ads-quick-select {
+        height: 36px !important;
+        font-size: 13px !important;
+        padding: 0 28px 0 10px !important;
+        border-radius: 6px !important;
+    }
+    .ads-quick-select-arrow {
+        right: 8px !important;
+    }
+    .ads-quick-select-arrow svg {
+        width: 14px !important;
+        height: 14px !important;
+    }
+    .ads-quick-freq-tabs {
+        padding: 2px !important;
+        gap: 2px !important;
+        border-radius: 6px !important;
+    }
+    .ads-quick-hero-card .ads-quick-freq-btn {
+        padding: 5px 8px !important;
+        font-size: 11.5px !important;
+        border-radius: 5px !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        color: #64748b !important;
+    }
+    .ads-quick-hero-card .ads-quick-freq-btn.active {
+        background: #038B5C !important;
+        background-color: #038B5C !important;
+        color: #ffffff !important;
+    }
+    .ads-quick-fields-row {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important; /* Keep Amount and Type side-by-side */
+        gap: 8px !important;
+    }
+    .ads-quick-currency-symbol {
+        left: 10px !important;
+        font-size: 13px !important;
+    }
+    .ads-quick-hero-card .ads-quick-amount-input {
+        height: 36px !important;
+        font-size: 14px !important;
+        padding-left: 24px !important;
+        padding-right: 8px !important;
+        border-radius: 6px !important;
+    }
+    .ads-quick-submit-btn {
+        height: 38px !important;
+        font-size: 13.5px !important;
+        border-radius: 6px !important;
+        padding: 0 14px !important;
+        margin-top: 2px !important;
+    }
+}
+
+.ads-quick-bar {
+    background: #007a3d;
+    padding: 14px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+@media (max-width: 900px) {
+    .ads-quick-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+}
+.ads-quick-bar-label {
+    font-size: 22px;
+    font-weight: 400;
+    color: #ffffff;
+    white-space: nowrap;
+    margin-right: 5px;
+}
+.ads-quick-bar-label strong {
+    font-weight: 800;
+}
+.ads-quick-select, .ads-quick-input {
+    background: #006030;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 15px;
+    font-weight: 600;
+    height: 44px;
+}
+.ads-quick-select option {
+    background: #ffffff;
+    color: #111;
+}
+.ads-quick-bar select {
+    flex: 2;
+}
+.ads-quick-bar .ads-quick-amount-wrap {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.ads-quick-bar .ads-quick-amount-wrap span {
+    position: absolute;
+    left: 12px;
+    font-weight: 700;
+}
+.ads-quick-bar .ads-quick-amount-wrap input {
+    padding-left: 26px;
+    width: 100%;
+}
+.ads-quick-btn {
+    background: #ffffff;
+    color: #007a3d;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+    height: 44px;
+    transition: all 0.2s;
+}
+.ads-quick-btn:hover {
+    background: #f1f5f9;
+    transform: translateY(-1px);
+}
+
+
+/* ==========================================================================
+   3. PROJECT DONATION CARD (IMAGE 1)
+   ========================================================================== */
+.ads-project-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 26px 24px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f1f5f9;
+    max-width: 440px;
+    margin: 0 auto;
+}
+.ads-card-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0 0 6px;
+}
+.ads-card-subtitle {
+    font-size: 14px;
+    color: var(--ads-text-muted);
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+/* Frequency Toggle Pills */
+.ads-card-freq-toggle {
+    display: flex;
+    background: #f1f5f9;
+    border-radius: 30px;
+    padding: 4px;
+    margin-bottom: 20px;
+}
+.ads-card-freq-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 26px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: center;
+}
+.ads-card-freq-btn.active {
+    background: var(--ads-magenta);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(216, 27, 96, 0.35);
+}
+
+/* Preset Amount Pills Grid */
+.ads-card-pills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+}
+.ads-card-pill {
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 26px;
+    padding: 12px 14px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+.ads-card-pill.active {
+    background: var(--ads-magenta);
+    border-color: var(--ads-magenta);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(216, 27, 96, 0.35);
+}
+.ads-card-pill .ads-pill-val {
+    font-size: 18px;
+    font-weight: 800;
+    display: block;
+}
+.ads-card-pill .ads-pill-sub {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.85;
+    display: block;
+    margin-top: 2px;
+}
+
+/* Dynamic Impact Box */
+.ads-card-impact-box {
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 13.5px;
+    color: #475569;
+    line-height: 1.45;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--ads-magenta);
+    min-height: 52px;
+}
+
+/* Custom Other Amount */
+.ads-card-other-wrap {
+    display: flex;
+    align-items: center;
+    border-bottom: 1.5px solid #cbd5e1;
+    margin-bottom: 20px;
+    padding-bottom: 6px;
+}
+.ads-card-other-wrap.focused {
+    border-color: var(--ads-magenta);
+}
+.ads-card-other-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: #475569;
+    margin-right: 6px;
+}
+.ads-card-other-input {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-weight: 700;
+    width: 100%;
+    color: #1e293b;
+}
+
+/* Dropdown */
+.ads-card-select-wrap {
+    margin-bottom: 20px;
+}
+.ads-card-select {
+    width: 100%;
+    height: 46px;
+    border-radius: 8px;
+    border: 1.5px solid #cbd5e1;
+    padding: 8px 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    background-color: #ffffff;
+}
+
+/* Big Donate Button */
+.ads-card-donate-btn {
+    width: 100%;
+    background: var(--ads-magenta);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 6px 18px rgba(216, 27, 96, 0.4);
+}
+.ads-card-donate-btn:hover {
+    background: var(--ads-magenta-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(216, 27, 96, 0.55);
+}
+
+/* ==========================================================================
+   4. CAMPAIGN DONATION BOX (DARK FOREST GREEN REPLICA AS ATTACHED)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
+
+.ads-campaign-card {
+    background: linear-gradient(180deg, #00473e 0%, #00362f 100%);
+    background-color: #00473e;
+    border-radius: 16px;
+    padding: 30px 24px 26px;
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+    box-shadow: 0 18px 45px rgba(0, 30, 25, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-sizing: border-box;
+    color: #ffffff;
+}
+
+.elementor-widget-ads_campaign_donation_box {
+    width: 100%;
+}
+.elementor-widget-ads_campaign_donation_box .elementor-widget-container,
+.elementor-widget-ads_campaign_donation_box .aryana-donation-wrapper {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Optional Goal Bar */
+.ads-campaign-goal-bar {
+    margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+.ads-campaign-goal-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.85);
+}
+.ads-goal-raised strong {
+    color: #4ade80;
+    font-size: 15px;
+}
+.ads-goal-progress-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+    overflow: hidden;
+}
+.ads-goal-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4ade80, #10b981);
+    border-radius: 9999px;
+}
+
+/* Header Section */
+.ads-campaign-header-block {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.ads-campaign-script-title {
+    font-family: 'Caveat', 'Dancing Script', 'Brush Script MT', cursive, sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #F5BA67;
+    line-height: 1.1;
+    margin-bottom: 4px;
+    display: block;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+.ads-campaign-heading {
+    font-family: var(--ads-font-primary, 'Outfit', 'Barlow', -apple-system, sans-serif);
+    font-size: 26px;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.25;
+    margin: 0;
+    text-align: center;
+    letter-spacing: -0.3px;
+}
+
+/* Single Payment / Monthly Payment Toggle */
+.ads-campaign-freq-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    background: transparent;
+    padding: 0;
+    margin-bottom: 16px;
+}
+.ads-campaign-freq-btn {
+    flex: 1 1 0;
+    padding: 11px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(0, 48, 40, 0.55);
+    font-size: 15px;
+    font-weight: 700;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.2;
+    box-sizing: border-box;
+}
+.ads-campaign-freq-btn:hover:not(.active) {
+    background: rgba(0, 75, 62, 0.7);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+.ads-campaign-freq-btn.active {
+    background: #00875a;
+    border-color: #00875a;
+    color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(0, 135, 90, 0.4);
+}
+
+/* Amount Pills Grid */
+.ads-campaign-pills-grid {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.ads-campaign-pills-grid.ads-pills-count-1 {
+    grid-template-columns: 1fr;
+}
+.ads-campaign-pills-grid.ads-pills-count-2 {
+    grid-template-columns: 1fr 1fr;
+}
+.ads-campaign-pills-grid.ads-pills-count-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+.ads-campaign-pills-grid.ads-pills-count-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+.ads-campaign-pills-grid[style*="display: none"],
+.ads-campaign-pills-grid[style*="display:none"],
+.ads-campaign-pills-grid.ads-hidden {
+    display: none !important;
+}
+.ads-campaign-pill {
+    background: transparent;
+    border: 1.5px solid #00875a;
+    border-radius: 8px;
+    padding: 12px 14px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    color: #FFFFFF;
+    font-size: 22px;
+    font-weight: 800;
+    outline: none;
+    width: 100%;
+    min-height: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+.ads-campaign-pill:not(.active):hover {
+    background: rgba(0, 135, 90, 0.2);
+    border-color: #10B981;
+}
+.ads-campaign-pill.active {
+    background: #FFFFFF;
+    border-color: #FFFFFF;
+    color: #00473e;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+.ads-campaign-pill .ads-pill-amount {
+    font-weight: 800;
+    line-height: 1;
+}
+.ads-campaign-pill .ads-pill-sub {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.9;
+    margin-top: 2px;
+}
+
+/* Custom Other Amount Row */
+.ads-campaign-other-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 35, 30, 0.4);
+    border: 1.5px solid #00875a;
+    border-radius: 8px;
+    padding: 11px 16px;
+    margin-bottom: 14px;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+.ads-campaign-other-row.focused,
+.ads-campaign-other-row:focus-within {
+    border-color: #10B981;
+    background: rgba(0, 35, 30, 0.7);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+.ads-other-label {
+    font-size: 18px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0;
+    white-space: nowrap;
+}
+.ads-campaign-other-input {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    font-size: 15.5px;
+    font-weight: 600;
+    width: 100%;
+    color: #FFFFFF !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.ads-campaign-other-input::placeholder {
+    color: rgba(255, 255, 255, 0.65);
+    font-weight: 500;
+}
+
+/* Dynamic White Impact / Package Description Box */
+.ads-campaign-impact-box {
+    background: #FFFFFF;
+    color: #00473e;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 14.5px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+    margin-bottom: 14px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Donation Type & Location Dropdown Rows */
+.ads-campaign-type-row,
+.ads-campaign-location-row {
+    position: relative;
+    margin-bottom: 14px;
+}
+.ads-campaign-type-select,
+.ads-campaign-location-select {
+    width: 100%;
+    height: 48px;
+    border-radius: 8px;
+    border: 1.5px solid #00875a;
+    background-color: rgba(0, 35, 30, 0.4);
+    background-image: none !important;
+    padding: 10px 42px 10px 16px;
+    font-size: 15.5px;
+    font-weight: 600;
+    color: #FFFFFF;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+.ads-campaign-type-select::-ms-expand,
+.ads-campaign-location-select::-ms-expand {
+    display: none;
+}
+.ads-campaign-type-select:focus,
+.ads-campaign-location-select:focus {
+    border-color: #10B981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+.ads-campaign-type-select option,
+.ads-campaign-location-select option {
+    background: #00473e;
+    color: #FFFFFF;
+    font-weight: 600;
+    padding: 8px;
+}
+.ads-campaign-select-arrow {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+}
+.ads-campaign-select-arrow svg {
+    display: block;
+}
+
+/* Big Vibrant Red Donate Button */
+.ads-campaign-donate-btn {
+    width: 100%;
+    height: 52px;
+    background: #E53935;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 18.5px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(229, 57, 53, 0.45);
+    box-sizing: border-box;
+}
+.ads-campaign-donate-btn:hover {
+    background: #D32F2F;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(229, 57, 53, 0.55);
+}
+.ads-campaign-donate-btn:active {
+    transform: translateY(1px);
+}
+
+/* Campaign Card Mobile Responsiveness */
+@media (max-width: 768px) {
+    .ads-campaign-card {
+        padding: 24px 18px 22px;
+        border-radius: 14px;
+        width: 100%;
+        max-width: 100%;
+    }
+    .ads-campaign-script-title {
+        font-size: 27px;
+    }
+    .ads-campaign-heading {
+        font-size: 22px;
+    }
+    .ads-campaign-pill {
+        font-size: 20px;
+        padding: 10px 8px;
+    }
+}
+
+/* ==========================================================================
+   5. CUSTOM DONATE BUTTON WIDGETS
+   ========================================================================== */
+.ads-btn-widget-wrapper {
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.ads-btn-widget-wrapper.ads-btn-pos-left {
+    justify-content: flex-start;
+    text-align: left;
+}
+.ads-btn-widget-wrapper.ads-btn-pos-center {
+    justify-content: center;
+    text-align: center;
+}
+.ads-btn-widget-wrapper.ads-btn-pos-right {
+    justify-content: flex-end;
+    text-align: right;
+}
+.ads-btn-widget-wrapper.ads-btn-pos-justify,
+.ads-btn-widget-wrapper.ads-btn-pos-justify .ads-custom-donate-btn,
+.ads-custom-donate-btn.ads-btn-justify {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.ads-campaign-btn-wrap {
+    display: flex;
+    width: 100%;
+}
+.ads-card-btn-wrap {
+    display: flex;
+    width: 100%;
+}
+
+/* Card & Campaign Donate Button Alignment Helpers */
+.elementor-align-left .ads-card-donate-btn,
+.elementor-align-center .ads-card-donate-btn,
+.elementor-align-right .ads-card-donate-btn,
+.elementor-align-left .ads-campaign-donate-btn,
+.elementor-align-center .ads-campaign-donate-btn,
+.elementor-align-right .ads-campaign-donate-btn {
+    width: auto !important;
+    display: inline-flex !important;
+}
+
+.elementor-align-justify .ads-card-donate-btn,
+.elementor-align-justify .ads-campaign-donate-btn {
+    width: 100% !important;
+    display: flex !important;
+}
+
+@media (max-width: 1024px) {
+    .elementor-align-tablet-left .ads-card-donate-btn,
+    .elementor-align-tablet-center .ads-card-donate-btn,
+    .elementor-align-tablet-right .ads-card-donate-btn,
+    .elementor-align-tablet-left .ads-campaign-donate-btn,
+    .elementor-align-tablet-center .ads-campaign-donate-btn,
+    .elementor-align-tablet-right .ads-campaign-donate-btn {
+        width: auto !important;
+        display: inline-flex !important;
+    }
+    .elementor-align-tablet-justify .ads-card-donate-btn,
+    .elementor-align-tablet-justify .ads-campaign-donate-btn {
+        width: 100% !important;
+        display: flex !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .elementor-align-mobile-left .ads-card-donate-btn,
+    .elementor-align-mobile-center .ads-card-donate-btn,
+    .elementor-align-mobile-right .ads-card-donate-btn,
+    .elementor-align-mobile-left .ads-campaign-donate-btn,
+    .elementor-align-mobile-center .ads-campaign-donate-btn,
+    .elementor-align-mobile-right .ads-campaign-donate-btn {
+        width: auto !important;
+        display: inline-flex !important;
+    }
+    .elementor-align-mobile-justify .ads-card-donate-btn,
+    .elementor-align-mobile-justify .ads-campaign-donate-btn {
+        width: 100% !important;
+        display: flex !important;
+    }
+}
+
+.ads-btn-group-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+.ads-custom-donate-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #D8005A;
+    color: #ffffff;
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 9999px;
+    text-decoration: none !important;
+    box-shadow: 0 4px 14px rgba(216, 0, 90, 0.28);
+    transition: all 0.22s ease-in-out;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    line-height: 1.3;
+    outline: none;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+.ads-custom-donate-btn:hover {
+    color: #ffffff;
+    opacity: 0.94;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(216, 0, 90, 0.38);
+}
+.ads-custom-donate-btn:active {
+    transform: translateY(0);
+}
+.ads-custom-donate-btn .ads-btn-icon {
+    font-size: 1.15em;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.ads-custom-donate-btn .ads-btn-icon i {
+    display: inline-block;
+    line-height: 1;
+}
+.ads-custom-donate-btn .ads-btn-icon svg {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    vertical-align: middle;
+    fill: currentColor;
+}
+.ads-custom-donate-btn .ads-btn-icon.ads-btn-icon-left {
+    margin-right: 8px;
+}
+.ads-custom-donate-btn .ads-btn-icon.ads-btn-icon-right {
+    margin-left: 8px;
+}
+.ads-custom-donate-btn.ads-btn-icon-only {
+    padding: 12px 20px;
+}
+.ads-custom-donate-btn.ads-btn-icon-only .ads-btn-icon {
+    margin: 0 !important;
+}
+.ads-custom-donate-btn.ads-btn-size-small {
+    padding: 8px 18px;
+    font-size: 14px;
+}
+.ads-custom-donate-btn.ads-btn-size-medium {
+    padding: 12px 28px;
+    font-size: 16px;
+}
+.ads-custom-donate-btn.ads-btn-size-large {
+    padding: 16px 36px;
+    font-size: 18px;
+}
+.ads-custom-donate-btn.ads-btn-size-xl {
+    padding: 20px 44px;
+    font-size: 20px;
+}
+
+/* ==========================================================================
+   WINTER APPEAL & PROJECT PAGES ACTION CARDS SECTION
+   ========================================================================== */
+.ads-winter-action-section {
+    position: relative;
+    box-sizing: border-box;
+}
+
+.ads-action-col-card {
+    transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    cursor: default;
+}
+
+.ads-action-col-card:hover {
+    transform: translateY(-4px);
+    border-color: #007A3D !important;
+    box-shadow: 0 14px 30px rgba(0, 122, 61, 0.12) !important;
+}
+
+.ads-action-col-card .elementor-widget-icon {
+    margin-bottom: 18px;
+}
+
+.ads-action-col-card .elementor-widget-icon .elementor-icon {
+    border-radius: 50% !important;
+    background: #E8F5E9 !important;
+    color: #007A3D !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 14px !important;
+    box-sizing: content-box !important;
+    transition: all 0.28s ease !important;
+}
+
+.ads-action-col-card .elementor-widget-icon .elementor-icon svg,
+.ads-action-col-card .elementor-widget-icon .elementor-icon i {
+    fill: #007A3D !important;
+    color: #007A3D !important;
+    transition: transform 0.28s ease !important;
+}
+
+.ads-action-col-card .elementor-widget-icon .elementor-icon svg path {
+    fill: #007A3D !important;
+}
+
+/* Hover: Keep icon and background perfectly visible (no whiteout / no green-on-green disappearing) */
+.ads-action-col-card:hover .elementor-widget-icon .elementor-icon,
+.ads-action-col-card .elementor-widget-icon .elementor-icon:hover,
+.ads-action-col-card .elementor-widget-icon:hover .elementor-icon {
+    background: #DCF2E2 !important;
+    transform: scale(1.08) !important;
+}
+
+.ads-action-col-card:hover .elementor-widget-icon .elementor-icon svg,
+.ads-action-col-card:hover .elementor-widget-icon .elementor-icon svg path,
+.ads-action-col-card:hover .elementor-widget-icon .elementor-icon i,
+.ads-action-col-card .elementor-widget-icon .elementor-icon:hover svg,
+.ads-action-col-card .elementor-widget-icon .elementor-icon:hover svg path,
+.ads-action-col-card .elementor-widget-icon .elementor-icon:hover i,
+.ads-action-col-card .elementor-widget-icon:hover .elementor-icon svg,
+.ads-action-col-card .elementor-widget-icon:hover .elementor-icon svg path,
+.ads-action-col-card .elementor-widget-icon:hover .elementor-icon i {
+    fill: #007A3D !important;
+    color: #007A3D !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.ads-action-col-card .ads-btn-widget-wrapper {
+    width: 100%;
+    margin-top: auto;
+}
+
+.ads-action-col-card .ads-custom-donate-btn {
+    width: 100%;
+    justify-content: center;
+    letter-spacing: 0.2px;
+    transition: all 0.25s ease;
+    cursor: pointer !important;
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 767px) {
+    .ads-winter-action-section {
+        padding: 24px 14px !important;
+        margin-top: 20px !important;
+        margin-bottom: 20px !important;
+    }
+    .ads-winter-action-section .elementor-widget-heading {
+        margin-bottom: 6px !important;
+    }
+    .ads-winter-action-section .elementor-widget-text-editor {
+        margin-bottom: 16px !important;
+    }
+    .ads-action-col-card {
+        padding: 16px 14px 18px !important;
+        margin-bottom: 12px !important;
+        min-height: auto !important;
+        width: 100% !important;
+    }
+    .ads-action-col-card .elementor-widget-icon {
+        margin-bottom: 8px !important;
+    }
+    .ads-action-col-card .elementor-widget-icon .elementor-icon {
+        padding: 10px !important;
+    }
+    .ads-action-col-card .elementor-widget-icon .elementor-widget-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        line-height: 1 !important;
+    }
+    .ads-action-col-card .ads-btn-widget-wrapper {
+        margin-top: 8px !important;
+    }
+
+    /* Mobile Spacing Reduction for 'Our Work in Pictures' across all pages */
+    .apg-gallery-section {
+        padding-top: 10px !important;
+        padding-bottom: 15px !important;
+    }
+    .apg-header {
+        margin-bottom: 16px !important;
+    }
+    .apg-title {
+        font-size: 26px !important;
+        margin: 0 0 6px 0 !important;
+    }
+    .apg-subtitle {
+        font-size: 14px !important;
+    }
+    .apg-container {
+        padding: 0 12px !important;
+    }
+    .elementor-element:has(.apg-gallery-section),
+    .e-con:has(.apg-gallery-section) {
+        padding-top: 10px !important;
+        padding-bottom: 15px !important;
+    }
+}
+
+
+

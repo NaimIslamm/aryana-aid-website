@@ -1,0 +1,411 @@
+@media (max-width: 480px) { 
+	.onelabels {display:block !important;} 
+	.singlelabels, .multiplelabels {display:none !important;}
+	.one {margin-bottom:10px; }
+	.donationtypeo, .locationo, .commentso, .amounto {padding-left:15px !important; padding-right:15px !important;  margin-bottom:10px; }
+	.six, .comments, .sixm, .commentsm {width:100%;}
+	.admino, .adminmo {font-size:10px !important; }
+	.total {padding-top:6% !important;}
+	.yourdetails {padding-left:0px !important;}
+	.card-expiry-month {margin-bottom:5px; }
+	.stripesubmit, .gocardlesssubmit {/*padding-left:0px !important;*/margin:auto; min-width:100% !important; /* margin-left:-20px !important;*/}
+	.adminsingle, .adminmoparent {padding-left:15px !important;}
+	.api .card-expiry-year {min-width: 89px !important;}
+	.stripemon {margin-right:0px !important;}
+	.stripemon {float:left !important; min-width:100px !important; margin-right:12px !important; padding-right:0px !important;}
+	.adminsingle, .singlebottom {clear:both !important;}
+	.addanother0, .addanothermo {float:left !important; margin-right:12px !important; max-width:100% !important; padding-right:0px !important; padding-left: 5px; !important}
+	.removeone0, .removeonemo {padding-left:15px !important; float:left !important;}
+	#addanother, #removeone, #addanotherm, #removeonem {padding:8px;}
+	.giftinput {float:left !important; margin-top:7px !important; padding-left:3px  !important; padding-right:3px !important;}
+	.osecond img{max-width:70px !important;}
+	.ofirst {font-size:16px !important; padding-bottom: 10px !important;}
+	#supersize {padding-top:15px !important;}
+	input, textarea {/* -webkit-appearance: none !important;*/ -webkit-border-radius: 0 !important; }
+	.ospace {margin-top:9.5px !important;}
+	.adminmoparent {float:left !important;}
+	.multiplemonthly {margin-top:-35px !important;}
+	#gooneheading {font-size:15px !important;}
+	.goone img {max-width:70px !important;}
+	.singleblock{
+		width: 300px !important;
+		font-size: 13px;
+		line-height: 14px;
+		padding-top: 5px;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+	.monthlyblock {
+		width: 300px !important;
+		font-size: 13px;
+		line-height: 14px;
+		padding-top: 5px;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+	.adminsingle {
+		margin-bottom: -4px;
+		margin-top: -7px;
+	}
+	
+.spinner.loading {
+		margin-left:0.9em !important;
+		
+	}
+	
+	.spinner.loading:before {
+		height: 25px !important;
+		width: 25px !important;
+	}
+}
+
+@media (min-width: 481px) and (max-width: 767px) { 
+	.api .card-expiry-year {min-width: 89px !important;}
+	.onelabels {display:block !important;} 
+	.singlelabels, .multiplelabels {display:none !important;}
+	.one {margin-bottom:10px; }
+	.donationtypeo, .locationo, .commentso, .amounto {padding-left:15px !important; padding-right:15px !important; margin-bottom:10px; }
+	.six, .comments, .sixm, .commentsm {width:100%;}
+	.admino, .adminmo {font-size:10px !important; }
+	.total {padding-top:6% !important;}
+	.yourdetails {padding-left:0px !important;}
+	.card-expiry-month {margin-bottom:5px; }
+	.stripesubmit, .gocardlesssubmit {/* padding-left:0px !important;*/margin:auto; min-width:100% !important; /* margin-left:-20px !important;*/}
+	.adminsingle, .adminmoparent {padding-left:15px !important;}
+	.adminmoparent {float:left !important;}
+	.stripemon {float:left !important; margin-right:12px !important; min-width:100px !important; padding-right:0px !important;}
+	.adminsingle, .singlebottom {clear:both !important;}
+	.addanother0, .addanothermo {float:left !important; margin-right:12px !important;  max-width:100% !important;  padding-right:0px !important; padding-left: 5px; !important}
+	.removeone0, .removeonemo {padding-left:15px !important;  float:left !important;}
+	#addanother, #removeone, #addanotherm, #removeonem {padding:8px;}
+	.giftinput {float:left !important; margin-top:7px !important; padding-left:3px  !important; padding-right:3px !important;}
+	.osecond img{max-width:70px !important;}
+	.ofirst {font-size:12px !important;}
+	#supersize {padding-top:15px !important;}
+	input, textarea { /*-webkit-appearance: none !important;*/ -webkit-border-radius: 0 !important; }
+	.ospace {margin-top:9.5px !important;}
+	.multiplemonthly {margin-top:-35px !important;}
+	#gooneheading {font-size:15px !important;}
+	.goone img {max-width:70px !important;}
+	.singleblock{
+		width: 300px !important;
+		font-size: 11px;
+		line-height: 14px;
+		margin-top: 11px;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+	.monthlyblock {
+		width: 300px !important;
+		font-size: 11px;
+		line-height: 14px;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+	
+	.adminsingle {
+		margin-bottom: -4px;
+		margin-top: -7px;
+	}
+	
+.spinner.loading {
+		margin-left:0.9em !important;
+		
+	}
+	
+	.spinner.loading:before {
+		height: 25px !important;
+		width: 25px !important;
+	}
+}
+@media (min-width: 768px) and (max-width: 991px) {}
+@media (min-width: 992px) and (max-width: 1000px) {}
+
+@media (min-width: 1001px) {}
+
+
+body, div, input, select, label {font-family: 'Barlow', sans-serif;} /*Roboto*/
+label {
+	font-weight: 400 !important;
+	font-size: 15px !important;
+	-webkit-font-smoothing: antialiased !important;
+	-moz-osx-font-smoothing: grayscale !important;
+	text-align: left!important;
+	max-width: 100px;}
+.blubox-giftbox span {
+	display: block;
+	text-align: center;
+	font-size: 25px;
+	font-weight: bold;
+	color: #FFF;
+	font-family: Barlow; /*roboto*/
+	line-height: 100%;
+	margin-top: 10px;
+}
+
+input#event {
+	height: 34px !important;
+	width: 100%;
+}
+
+.middlebox {
+	border-top: 1px solid rgb(205, 200, 192) !important;
+	border-radius: 0px;
+    margin-bottom: 18px;
+	padding: 18px;
+}
+
+.clone, .clonem {
+	margin-bottom: 1em;
+}
+.api input {
+	-webkit-border: 1px solid #D5D5D5 !important;
+	border: 1px solid #D5D5D5 !important;
+	box-sizing: border-box !important;
+	-webkit-border-bottom: 1px solid #D5D5D5 !important;
+	border-bottom: 1px solid #D5D5D5 !important;
+}
+.api select:not(.card-expiry-month):not(.card-expiry-year) {
+	padding: 2px 35px 2px 7px; -moz-border-top-style: none !important; -webkit-appearance: none; -moz-appearance: none; text-overflow: '';
+	background-color: white !important; border-radius:0px !important; border:1px solid rgb(205, 200, 192) !important; min-height:35.99px !important;
+}
+.api .card-expiry-month, .api .card-expiry-year {height:40px !important; -webkit-border-radius: 5px !important;}
+.api .card-expiry-month {margin-bottom:16px;}
+
+.drop:before, .newone:before, .drop1:before, .drop2:before, .drop3:before, .drop4:before, .drop5:before
+{
+	
+	bottom: 10px;
+	content: '';
+	cursor: pointer;
+	display: block;
+	position: absolute;
+	right: 0px;
+	text-size-adjust: 100%;
+	top: 17px;
+	white-space: nowrap;
+	column-rule-color: #3a3a3a;
+	perspective-origin: 10px 5px;
+	transform-origin: 10px 5px;
+	border-top: 10px solid #d72b26;
+	border-right: 10px solid rgba(0,0,0,0);
+	border-bottom: 0px solid rgba(0,0,0,0);
+	border-left: 10px solid rgba(0,0,0,0);
+	font: 14px/16px Arial,"Helvetica Neue",Helvetica,sans-serif;
+	margin: -3px 5px 0px 0px;
+	outline: #3a3a3a none 0px;
+	z-index: 1;
+	text-align: center;
+	width: 21px;
+	height: 100%;
+	pointer-events: none;
+	box-sizing: border-box;
+	color: #d72b25;
+	font-size: 23px;
+}
+
+.drop:after, .newone:after, .drop1:after, .drop2:after, .drop3:after, .drop4:after, .drop5:after
+
+{
+	
+	bottom: 0px;
+	box-sizing: border-box;
+	color: #3a3a3a;
+	content: '';
+	cursor: pointer;
+	display: block;
+	height: 36px;
+	right: 0px;
+	position: absolute;
+	text-align: left;
+	text-size-adjust: 100%;
+	top: 0px;
+	white-space: nowrap;
+	width: 1px;
+	column-rule-color: #3a3a3a;
+	perspective-origin: .5px 17px;
+	transform-origin: .5px 17px;
+	border-top: 0px none #3a3a3a;
+	border-right: 0px none #3a3a3a;
+	border-bottom: 0px none #3a3a3a;
+	border-left: 1px solid #ccc;
+	font: 14px/16px Arial,"Helvetica Neue",Helvetica,sans-serif;
+	margin: 0px 30px 0px 0px;
+	outline: #3a3a3a none 0px;
+}
+
+
+bootstrap.css:1068
+:after, :before {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.spanemail, .spansms, .spanphone, .spanpost, .spanadminfee, .spanadminfeem, .spangifted, .spanconfirm, .spanconfirmm
+{
+	display: inline-block;
+	vertical-align: middle;
+	width: 28px;
+	height: 22px;
+	background: url(../images/checkbox.png) no-repeat;
+}
+
+#zemail1, #zsms1, #zpost1, #zphone1, #adminfee, #adminfeem, #gifted {display:none;}
+#zemail1:checked + span, #zsms1:checked + span, #zphone1:checked + span, #zpost1:checked + span, #adminfee:checked + span, #adminfeem:checked + span, #gifted:checked + span, #econfirm:checked + span, #econfirmm:checked + span {
+	display: inline-block;
+	vertical-align: middle;
+	width: 28px;
+	height: 22px;
+	background: url(../images/checkbox2.png) no-repeat;
+}
+@media (max-width: 991.98px) {
+	.spanemail, .spansms, .spanphone, .spanpost{
+		height: 16px;
+		background: url(../images/checkbox_16.png) no-repeat;
+	}
+	#zemail1:checked + span, #zsms1:checked + span, #zphone1:checked + span, #zpost1:checked + span{
+		height: 16px;
+		background: url(../images/checkbox2_16.png) no-repeat;
+	}
+}
+@media (max-width: 768px) {
+	.spanemail, .spansms, .spanphone, .spanpost{
+		height: 12px;
+		width: 31px !important;
+		background: url(../images/checkbox_12.png) no-repeat;
+	}
+	#zemail1:checked + span, #zsms1:checked + span, #zphone1:checked + span, #zpost1:checked + span{
+		height: 12px;
+		width: 31px !important;
+		background: url(../images/checkbox2_12.png) no-repeat;
+	}
+}
+@media (max-width: 576px) {
+	.spanemail, .spansms, .spanphone, .spanpost{
+		height: 10px;
+		width: 34px !important;
+		background: url(../images/checkbox_10s.png) no-repeat;
+	}
+	#zemail1:checked + span, #zsms1:checked + span, #zphone1:checked + span, #zpost1:checked + span{
+		height: 10px;
+		width: 34px !important;
+		background: url(../images/checkbox2_10s.png) no-repeat;
+	}
+}
+div#DIV_3 {
+	margin-left: auto;
+	margin-right: auto;
+	bottom: -13px;
+	box-sizing: border-box;
+	color: #fff;
+	height: 12px;
+	left: 116.297px;
+	position: absolute;
+	right: 104.313px;
+	text-align: center;
+	top: 56px;
+	width: 12px;
+	column-rule-color: #fff;
+	perspective-origin: 6px 6px;
+	transform-origin: 6px 6px;
+	border-top: 6px solid #348a5b!important;
+	border-right: 6px solid rgba(0,0,0,0);
+	border-bottom: 6px solid rgba(0,0,0,0);
+	border-left: 6px solid rgba(0,0,0,0);
+	font: 16px/20.8px ag_book_roundedregular;
+	outline: #fff none 0px;
+}
+
+#event {padding-left:10px !important;}
+
+div.total.col-xs-6.col-md-6 {
+	text-align:right;
+	padding-left:0px;	
+}		
+
+select.one, .four, .five, .onem, .fourm, .fivem, #title, #country{
+    background: none !important;
+    min-width: 100px !important;
+    font-weight: normal !important;
+}
+#card-expiry-month, #card-expiry-year {
+	border-radius: 3px !important;
+	-webkit-appearance: menulist !important;
+	-moz-appearance: menulist !important;
+	min-width: 85px !important;
+	font-weight:normal !important;
+	background:none !important;padding:0 !important;}
+   
+.spinner.loading {
+	margin-left:1em;
+	padding: 10px;
+	position: relative;
+	text-align: center;
+}
+.spinner.loading:before {
+	content: "";
+	height: 30px;
+	width: 30px;
+	margin: -15px auto auto -15px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	border-width: 5px;
+	border-style: solid;
+	border-color: #2180c0 #ccc #ccc;
+	border-radius: 100%;
+	animation: rotation .7s infinite linear;
+}
+
+@keyframes rotation {
+	from {
+		transform: rotate(0deg);
+		} to {
+		transform: rotate(359deg);
+	}
+}
+
+.stripespinner {
+	margin-left:0.7em;
+	top:3px;
+	padding: 10px;
+	position: relative;
+	text-align: center;
+    display:none;
+}
+.stripespinner:before {
+	content: "";
+	height: 23px;
+	width: 23px;
+	margin: -15px auto auto -15px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	border-width: 5px;
+	border-style: solid;
+	border-color: #fff rgba(255,255,255,0.2) rgba(255,255,255,0.2);
+	border-radius: 100%;
+	animation: rotation .7s infinite linear;
+}
+
+@keyframes rotation {
+	from {
+		transform: rotate(0deg);
+		} to {
+		transform: rotate(359deg);
+	}
+}
+
+.one, .four, .five, .onem, .fourm, .fivem {
+word-wrap: normal !important;
+}
+
+.paypalone, .paypalmon{color: transparent !important;}
+
+#once:hover, #monthly:hover {
+    cursor: pointer !important;
+}
+@media (max-width: 340px) { 
+	label{font-size: 10px !important;}
+}

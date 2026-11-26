@@ -1,0 +1,696 @@
+/**
+ * Aryana Aid Donation System - Slide-Out Donation Drawer Styles
+ * Strict CSS Isolation to prevent theme button and layout overrides.
+ */
+
+:root {
+    --ads-drawer-bg: #FAF8F5;
+    --ads-drawer-header-color: #00473e;
+    --ads-drawer-subtitle-color: #008254;
+    --ads-drawer-btn-bg: #007a50;
+    --ads-drawer-btn-hover-bg: #006341;
+    --ads-drawer-btn-color: #ffffff;
+    --ads-drawer-stepper-color: #00473e;
+    --ads-drawer-stepper-bg: #ffffff;
+    --ads-drawer-remove-color: #9c7a56;
+}
+
+/* ==========================================================================
+   1. BACKDROP OVERLAY
+   ========================================================================== */
+html, body {
+    overflow-x: clip;
+}
+@supports not (overflow-x: clip) {
+    html, body {
+        overflow-x: hidden;
+    }
+}
+
+#ads-donation-drawer-root {
+    position: relative;
+    z-index: 999999;
+}
+
+#ads-donation-drawer-root:not(.ads-drawer-open) {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+#ads-donation-drawer-root:not(.ads-drawer-open) .ads-drawer-panel {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+#ads-donation-drawer-root.ads-drawer-open {
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+#ads-donation-drawer-root.ads-drawer-open .ads-drawer-panel {
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.52);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 999998;
+}
+
+#ads-donation-drawer-root.ads-drawer-open .ads-drawer-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ==========================================================================
+   2. SLIDE-OUT ASIDE PANEL
+   ========================================================================== */
+#ads-donation-drawer-root .ads-drawer-panel {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    width: var(--ads-drawer-width-desktop, 430px) !important;
+    max-width: 96vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    background-color: var(--ads-drawer-bg, #FAF8F5) !important;
+    background-image: radial-gradient(#e5dfd5 0.5px, transparent 0.5px) !important;
+    background-size: 16px 16px !important;
+    box-shadow: -10px 0 35px rgba(0, 0, 0, 0.18) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transform: translateX(100%) !important;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    z-index: 999999 !important;
+    box-sizing: border-box !important;
+    font-family: 'Albert Sans', 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    color: #1e293b !important;
+    -webkit-font-smoothing: antialiased !important;
+}
+
+#ads-donation-drawer-root.ads-drawer-open .ads-drawer-panel {
+    transform: translateX(0) !important;
+}
+
+/* ==========================================================================
+   3. DRAWER HEADER & CLOSE BUTTON
+   ========================================================================== */
+#ads-donation-drawer-root .ads-drawer-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 22px 24px 18px 24px !important;
+    border-bottom: 1px solid #EAE4D9 !important;
+    background-color: var(--ads-drawer-bg, #FAF8F5) !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-title {
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    color: var(--ads-drawer-header-color, #00473e) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.02em !important;
+}
+
+/* Crisp Small White/Grey Close Button (Protected from Theme Button Styles) */
+#ads-donation-drawer-root .ads-drawer-close-btn,
+#ads-donation-drawer-root div#ads-drawer-close {
+    all: unset !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    border: 1px solid #D5CEBF !important;
+    border-radius: 6px !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    outline: none !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.18s ease !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-close-btn:hover {
+    background: #f1ede6 !important;
+    border-color: #94a3b8 !important;
+    transform: scale(1.04) !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-close-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+    stroke: #334155 !important;
+    stroke-width: 2.6 !important;
+    display: block !important;
+    margin: auto !important;
+    pointer-events: none !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-close-btn:hover svg {
+    stroke: #0f172a !important;
+}
+
+/* ==========================================================================
+   4. DRAWER BODY & ITEMS LIST
+   ========================================================================== */
+#ads-donation-drawer-root .ads-drawer-body {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 16px 24px !important;
+    box-sizing: border-box !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-body::-webkit-scrollbar {
+    width: 5px;
+}
+#ads-donation-drawer-root .ads-drawer-body::-webkit-scrollbar-thumb {
+    background: #D9D2C5;
+    border-radius: 4px;
+}
+
+/* Item Card */
+#ads-donation-drawer-root .ads-drawer-item {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding: 16px 0 !important;
+    border-bottom: 1px solid #ECE5D8 !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    transition: opacity 0.22s ease, transform 0.22s ease !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-item.ads-item-removing {
+    opacity: 0 !important;
+    transform: translateX(25px) !important;
+}
+
+/* Thumbnail Photo (Hidden per client request) */
+#ads-donation-drawer-root .ads-drawer-item-thumb-box {
+    display: none !important;
+}
+
+/* Info Column */
+#ads-donation-drawer-root .ads-drawer-item-info {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    padding-right: 6px !important;
+    box-sizing: border-box !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-item-title {
+    font-size: 15.5px !important;
+    font-weight: 800 !important;
+    color: var(--ads-drawer-item-title-color, var(--ads-drawer-header-color, #00473e)) !important;
+    margin: 0 0 2px 0 !important;
+    padding: 0 !important;
+    line-height: 1.25 !important;
+    word-break: break-word !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-item-subtitle {
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    color: var(--ads-drawer-subtitle-color, #008254) !important;
+    margin: 0 0 3px 0 !important;
+    padding: 0 !important;
+    line-height: 1.3 !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-item-meta {
+    font-size: 12px !important;
+    color: #64748b !important;
+    margin: 0 0 5px 0 !important;
+    padding: 0 !important;
+    line-height: 1.3 !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-item-price {
+    font-size: 15.5px !important;
+    font-weight: 800 !important;
+    color: var(--ads-drawer-item-price-color, var(--ads-drawer-header-color, #00473e)) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+}
+
+/* ==========================================================================
+   5. RIGHT SIDE ACTIONS (SMALL STEPPER & SMALL REMOVE LINK)
+   ========================================================================== */
+#ads-donation-drawer-root .ads-drawer-item-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
+    flex-shrink: 0 !important;
+    margin-left: auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Small Delicate Stepper Box */
+#ads-donation-drawer-root .ads-drawer-stepper {
+    all: unset !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    border: 1px solid var(--ads-drawer-stepper-border, #D5CEBF) !important;
+    border-radius: 4px !important;
+    background: var(--ads-drawer-stepper-bg, #ffffff) !important;
+    background-color: var(--ads-drawer-stepper-bg, #ffffff) !important;
+    height: 22px !important;
+    min-height: 22px !important;
+    max-height: 22px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    box-shadow: none !important;
+    width: auto !important;
+    line-height: 1 !important;
+}
+
+/* Small Stepper Minus and Plus Buttons */
+#ads-donation-drawer-root .ads-drawer-step-btn,
+#ads-donation-drawer-root span.ads-drawer-step-btn {
+    all: unset !important;
+    width: 20px !important;
+    min-width: 20px !important;
+    max-width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    max-height: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: var(--ads-drawer-stepper-color, #00473e) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    line-height: 1 !important;
+    box-sizing: border-box !important;
+    transition: background-color 0.15s ease, color 0.15s ease !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-step-btn:hover {
+    background-color: #f1ede6 !important;
+    color: #0f172a !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-step-btn:active {
+    background-color: #e5dfd1 !important;
+}
+
+/* Stepper Number */
+#ads-donation-drawer-root .ads-drawer-step-val,
+#ads-donation-drawer-root span.ads-drawer-step-val {
+    all: unset !important;
+    min-width: 18px !important;
+    text-align: center !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: var(--ads-drawer-stepper-color, #00473e) !important;
+    padding: 0 4px !important;
+    line-height: 20px !important;
+    box-sizing: border-box !important;
+    user-select: none !important;
+}
+
+/* Small Delicate Remove Text Link (NOT A BIG BUTTON) */
+#ads-donation-drawer-root .ads-drawer-remove-link,
+#ads-donation-drawer-root a.ads-drawer-remove-link {
+    all: unset !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: var(--ads-drawer-remove-color, #9c7a56) !important;
+    text-decoration: underline !important;
+    cursor: pointer !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 6px 0 0 0 !important;
+    display: inline-block !important;
+    line-height: 1.2 !important;
+    text-align: right !important;
+    box-shadow: none !important;
+    text-transform: none !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    transition: color 0.15s ease !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-remove-link:hover {
+    color: #b91c1c !important;
+    background: transparent !important;
+    text-decoration: underline !important;
+}
+
+/* ==========================================================================
+   6. EMPTY STATE
+   ========================================================================== */
+#ads-donation-drawer-root .ads-drawer-empty-state {
+    display: none !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 60px 20px !important;
+    box-sizing: border-box !important;
+}
+
+#ads-donation-drawer-root.ads-is-empty .ads-drawer-empty-state,
+#ads-donation-drawer-root .ads-drawer-panel.ads-is-empty .ads-drawer-empty-state {
+    display: flex !important;
+}
+
+#ads-donation-drawer-root.ads-has-items .ads-drawer-empty-state,
+#ads-donation-drawer-root .ads-drawer-panel.ads-has-items .ads-drawer-empty-state {
+    display: none !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-empty-icon {
+    width: 72px !important;
+    height: 72px !important;
+    border-radius: 50% !important;
+    background: #EFE9DD !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 16px !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-empty-msg {
+    font-size: 15.5px !important;
+    font-weight: 600 !important;
+    color: #475569 !important;
+    margin: 0 0 18px 0 !important;
+    max-width: 270px !important;
+    line-height: 1.45 !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-continue-btn {
+    all: unset !important;
+    padding: 9px 20px !important;
+    border-radius: 6px !important;
+    background-color: var(--ads-drawer-header-color, #00473e) !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    display: inline-block !important;
+    text-align: center !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-continue-btn:hover {
+    background-color: #022c26 !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ==========================================================================
+   7. FOOTER & TOTALS SUMMARY (STICKY AT BOTTOM)
+   ========================================================================== */
+#ads-donation-drawer-root .ads-drawer-footer {
+    padding: 18px 24px 24px 24px !important;
+    border-top: 1px solid #EAE4D9 !important;
+    background-color: var(--ads-drawer-bg, #FAF8F5) !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-totals-box {
+    margin-bottom: 14px !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-totals-title {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    color: var(--ads-drawer-header-color, #00473e) !important;
+    margin-bottom: 8px !important;
+    letter-spacing: -0.01em !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-totals-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    font-size: 14px !important;
+    color: #334155 !important;
+    margin-bottom: 5px !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-monthly-row {
+    display: none !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-monthly-row.ads-has-monthly {
+    display: flex !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-totals-val {
+    font-weight: 700 !important;
+    color: #0f172a !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-due-row {
+    margin-top: 8px !important;
+    padding-top: 8px !important;
+    border-top: 1px dashed #D5CEBF !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-due-label {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    color: var(--ads-drawer-header-color, #00473e) !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-due-val {
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    color: var(--ads-drawer-header-color, #00473e) !important;
+}
+
+/* Proceed To Checkout Button */
+#ads-donation-drawer-root .ads-drawer-checkout-btn,
+#ads-donation-drawer-root button#ads-drawer-checkout-btn {
+    all: unset !important;
+    width: 100% !important;
+    height: 48px !important;
+    border-radius: var(--ads-drawer-btn-radius, 8px) !important;
+    background-color: var(--ads-drawer-btn-bg, #007a50) !important;
+    color: var(--ads-drawer-btn-color, #ffffff) !important;
+    border: none !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.01em !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 4px 14px rgba(0, 122, 80, 0.28) !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-checkout-btn:hover {
+    background-color: var(--ads-drawer-btn-hover-bg, #006341) !important;
+    box-shadow: 0 6px 18px rgba(0, 122, 80, 0.38) !important;
+    transform: translateY(-1px) !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-checkout-btn:active {
+    transform: translateY(1px) !important;
+    box-shadow: 0 2px 8px rgba(0, 122, 80, 0.2) !important;
+}
+
+/* ==========================================================================
+   8. FLOATING LAUNCHER (CORNER ICON)
+   ========================================================================== */
+#ads-donation-drawer-root .ads-drawer-launcher {
+    all: unset !important;
+    position: fixed !important;
+    bottom: 24px !important;
+    right: 24px !important;
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 50% !important;
+    background-color: var(--ads-drawer-launcher-bg, var(--ads-drawer-btn-bg, #007a50)) !important;
+    color: var(--ads-drawer-launcher-color, #ffffff) !important;
+    border: 3px solid #ffffff !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22) !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 999990 !important;
+    box-sizing: border-box !important;
+    transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-launcher:hover {
+    background-color: var(--ads-drawer-btn-hover-bg, #006341) !important;
+    transform: scale(1.08) translateY(-2px) !important;
+}
+
+#ads-donation-drawer-root .ads-drawer-launcher-badge {
+    position: absolute !important;
+    top: -4px !important;
+    right: -4px !important;
+    background-color: var(--ads-drawer-launcher-badge-bg, #E11D48) !important;
+    color: #ffffff !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    min-width: 22px !important;
+    height: 22px !important;
+    border-radius: 11px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 4px !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+    border: 2px solid #ffffff !important;
+}
+
+/* ==========================================================================
+   9. MOBILE & TABLET RESPONSIVE
+   ========================================================================== */
+@media (max-width: 768px) {
+    #ads-donation-drawer-root .ads-drawer-panel {
+        width: var(--ads-drawer-width-tablet, 50vw) !important;
+        max-width: var(--ads-drawer-width-tablet, 50vw) !important;
+        min-width: 280px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #ads-donation-drawer-root .ads-drawer-panel {
+        width: var(--ads-drawer-width-mobile, 70vw) !important;
+        max-width: var(--ads-drawer-width-mobile, 70vw) !important;
+        min-width: 260px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-header {
+        padding: 14px 14px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-title {
+        font-size: 18px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-close-btn {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        max-width: 28px !important;
+        min-height: 28px !important;
+        max-height: 28px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-close-btn svg {
+        width: 12px !important;
+        height: 12px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-body {
+        padding: 12px 14px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-item {
+        padding: 12px 0 !important;
+        gap: 8px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-item-title {
+        font-size: 14px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-item-subtitle {
+        font-size: 12px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-item-meta {
+        font-size: 11px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-item-price {
+        font-size: 14px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-stepper {
+        height: 20px !important;
+        min-height: 20px !important;
+        max-height: 20px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-step-btn {
+        width: 18px !important;
+        height: 18px !important;
+        min-width: 18px !important;
+        max-width: 18px !important;
+        min-height: 18px !important;
+        max-height: 18px !important;
+        font-size: 12px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-step-val {
+        min-width: 16px !important;
+        font-size: 11px !important;
+        line-height: 18px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-remove-link {
+        font-size: 11px !important;
+        margin-top: 4px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-footer {
+        padding: 12px 14px 16px 14px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-totals-title {
+        font-size: 14.5px !important;
+        margin-bottom: 6px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-totals-row {
+        font-size: 13px !important;
+        margin-bottom: 4px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-due-label {
+        font-size: 14.5px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-due-val {
+        font-size: 16px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-checkout-btn {
+        height: 44px !important;
+        font-size: 14.5px !important;
+    }
+    #ads-donation-drawer-root .ads-drawer-launcher {
+        bottom: 14px !important;
+        right: 14px !important;
+        width: 48px !important;
+        height: 48px !important;
+    }
+}

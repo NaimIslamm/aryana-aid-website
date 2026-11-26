@@ -1,0 +1,84 @@
+# BEGIN LSCACHE
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteRule litespeed/debug/.*\.log$ - [F,L]
+RewriteRule (^|/)\.litespeed_conf\. - [F,L]
+</IfModule>
+<IfModule LiteSpeed>
+CacheLookup on
+RewriteRule .* - [E=Cache-Control:no-autoflush]
+
+### marker ASYNC start ###
+RewriteCond %{REQUEST_URI} /wp-admin/admin-ajax\.php
+RewriteCond %{QUERY_STRING} action=async_litespeed
+RewriteRule .* - [E=noabort:1]
+### marker ASYNC end ###
+
+### marker REST AUTH start ###
+RewriteCond %{HTTP:Authorization} !^$
+RewriteCond %{REQUEST_URI} /wp\-json(?:/|$) [OR]
+RewriteCond %{QUERY_STRING} (^|&)rest_route=
+RewriteRule .* - [E=Cache-Control:no-cache]
+### marker REST AUTH end ###
+
+### marker POSTPASS start ###
+RewriteCond %{HTTP_COOKIE} (^|;\s*)wp-postpass_a7f212e2ec49e4701b7679d1e3795da3=
+RewriteRule .* - [E=Cache-Control:no-cache]
+### marker POSTPASS end ###
+
+### marker DROPQS start ###
+CacheKeyModify -qs:fbclid
+CacheKeyModify -qs:gclid
+CacheKeyModify -qs:utm*
+CacheKeyModify -qs:_ga
+### marker DROPQS end ###
+
+</IfModule>
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+# END LSCACHE
+# BEGIN NON_LSCACHE
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+# END NON_LSCACHE
+
+# BEGIN WordPress
+# The directives (lines) between "BEGIN WordPress" and "END WordPress" are
+# dynamically generated, and should only be modified via WordPress filters.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+
+# BEGIN Security Hardening
+# Disable Directory Browsing
+Options -Indexes
+
+# Protect Sensitive Configuration and Meta Files
+<FilesMatch "^(wp-config\.php|readme\.html|license\.txt|\.env|\.git|\.sql|\.bak|xmlrpc\.php)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block Direct HTTP Access to Compressed Archives in Public Paths
+<FilesMatch "\.(zip|tar|gz|bak|backup)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+# END Security Hardening

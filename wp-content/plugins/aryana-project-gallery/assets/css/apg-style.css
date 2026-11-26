@@ -1,0 +1,477 @@
+/**
+ * Aryana Project Gallery - Frontend Styles
+ */
+
+/* Container & Base Grid */
+.apg-gallery-section {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.apg-gallery-section * {
+    box-sizing: border-box;
+}
+
+.apg-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* Section Header */
+.apg-header {
+    margin-bottom: 32px;
+}
+
+.apg-title {
+    margin: 0 0 8px 0;
+    line-height: 1.25;
+}
+
+.apg-subtitle {
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Grid & Columns */
+.apg-grid {
+    display: grid;
+    width: 100%;
+}
+
+.apg-col {
+    width: 100%;
+}
+
+/* Card Item */
+.apg-card-item {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+    outline: none;
+}
+
+.apg-card-item:hover,
+.apg-card-item:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+}
+
+/* Card Background Image */
+.apg-card-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.5s ease;
+}
+
+.apg-card-item.apg-has-zoom:hover .apg-card-bg,
+.apg-card-item.apg-has-zoom:focus .apg-card-bg {
+    transform: scale(1.08);
+}
+
+/* Card Overlay */
+.apg-card-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 14px;
+    text-align: center;
+    transition: background-color 0.4s ease, padding 0.4s ease;
+}
+
+/* Hover Search Icon Box */
+.apg-hover-icon-box {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    border: 2px solid #ffffff;
+    border-radius: 6px;
+    width: 44px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.apg-svg-icon {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+}
+
+.apg-card-item:hover .apg-hover-icon-box,
+.apg-card-item:focus .apg-hover-icon-box {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Card Info & Title */
+.apg-card-info {
+    position: relative;
+    z-index: 2;
+    transition: transform 0.35s ease;
+}
+
+.apg-card-title {
+    margin: 0;
+    line-height: 1.3;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.apg-card-sub {
+    display: block;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 4px;
+    font-weight: 400;
+}
+
+/* ==========================================================
+   LIGHTBOX POPUP MODAL & SLIDER
+   ========================================================== */
+.apg-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.apg-modal.apg-modal-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Backdrop */
+.apg-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--apg-modal-bg, rgba(10, 15, 29, 0.94));
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    cursor: pointer;
+}
+
+/* Modal Content Container */
+.apg-modal-container {
+    position: relative;
+    z-index: 2;
+    width: 94%;
+    max-width: var(--apg-max-w, 960px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: apgScaleIn 0.28s ease-out;
+}
+
+@keyframes apgScaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Topbar */
+.apg-modal-topbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 4px 14px 4px;
+    color: #ffffff;
+}
+
+.apg-modal-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.apg-modal-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.apg-modal-counter {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.16) !important;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+}
+
+/* Close Button - Bulletproof Reset */
+#apg-modal button.apg-modal-close-btn,
+.apg-modal-close-btn {
+    all: unset !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    max-width: 38px !important;
+    max-height: 38px !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+    transition: transform 0.2s ease, background-color 0.2s ease, opacity 0.2s ease !important;
+    -webkit-appearance: none !important;
+}
+
+#apg-modal button.apg-modal-close-btn:hover,
+.apg-modal-close-btn:hover {
+    background: rgba(220, 38, 38, 0.85) !important;
+    border-color: transparent !important;
+    transform: scale(1.08) !important;
+}
+
+#apg-modal button.apg-modal-close-btn svg,
+.apg-modal-close-btn svg {
+    display: block !important;
+    width: 18px !important;
+    height: 18px !important;
+    stroke: #ffffff !important;
+    fill: none !important;
+    stroke-width: 2.5px !important;
+    margin: auto !important;
+    pointer-events: none !important;
+}
+
+/* Stage & Slide Viewer */
+.apg-modal-stage {
+    position: relative;
+    width: 100%;
+    height: var(--apg-max-h, 580px);
+    max-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.35);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+
+.apg-slide-viewer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.apg-modal-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: var(--apg-img-fit, contain);
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.apg-modal-image.apg-img-visible {
+    opacity: 1;
+}
+
+/* Spinner */
+.apg-slide-loader {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #038b5c;
+    border-radius: 50%;
+    animation: apgSpin 0.7s linear infinite;
+    display: none;
+}
+
+.apg-slide-loader.apg-is-loading {
+    display: block;
+}
+
+@keyframes apgSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* Nav Arrows - Circular & Centered (Overrides Any Theme CSS) */
+#apg-modal button.apg-nav-btn,
+.apg-nav-btn {
+    all: unset !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 100 !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    max-width: 48px !important;
+    max-height: 48px !important;
+    border-radius: 50% !important;
+    background: rgba(15, 23, 42, 0.75) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+}
+
+#apg-modal button.apg-nav-btn:hover,
+.apg-nav-btn:hover {
+    background: #038b5c !important;
+    border-color: #038b5c !important;
+    transform: translateY(-50%) scale(1.1) !important;
+    box-shadow: 0 6px 20px rgba(3, 139, 91, 0.6) !important;
+}
+
+#apg-modal button.apg-nav-prev,
+.apg-nav-prev {
+    left: 16px !important;
+    right: auto !important;
+}
+
+#apg-modal button.apg-nav-next,
+.apg-nav-next {
+    right: 16px !important;
+    left: auto !important;
+}
+
+#apg-modal button.apg-nav-btn svg,
+.apg-nav-btn svg {
+    display: block !important;
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+    stroke: #ffffff !important;
+    fill: none !important;
+    stroke-width: 2.8px !important;
+    margin: auto !important;
+    pointer-events: none !important;
+}
+
+/* Bottom Red Box Dots Removed */
+.apg-dots-container {
+    display: none !important;
+}
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+    .apg-modal-stage {
+        height: 60vh;
+    }
+
+    #apg-modal button.apg-nav-btn,
+    .apg-nav-btn {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        min-height: 40px !important;
+    }
+
+    #apg-modal button.apg-nav-btn svg,
+    .apg-nav-btn svg {
+        width: 22px !important;
+        height: 22px !important;
+        min-width: 22px !important;
+        min-height: 22px !important;
+    }
+
+    #apg-modal button.apg-nav-prev,
+    .apg-nav-prev {
+        left: 10px !important;
+    }
+
+    #apg-modal button.apg-nav-next,
+    .apg-nav-next {
+        right: 10px !important;
+    }
+
+    .apg-modal-title {
+        font-size: 17px !important;
+    }
+
+    /* Mobile Spacing Reduction for 'Our Work in Pictures' */
+    .apg-gallery-section {
+        padding-top: 10px !important;
+        padding-bottom: 15px !important;
+    }
+
+    .apg-header {
+        margin-bottom: 16px !important;
+    }
+
+    .apg-title {
+        font-size: 26px !important;
+        margin: 0 0 6px 0 !important;
+    }
+
+    .apg-subtitle {
+        font-size: 14px !important;
+    }
+
+    .apg-container {
+        padding: 0 12px !important;
+    }
+
+    .elementor-element:has(.apg-gallery-section),
+    .e-con:has(.apg-gallery-section) {
+        padding-top: 10px !important;
+        padding-bottom: 15px !important;
+    }
+}
+

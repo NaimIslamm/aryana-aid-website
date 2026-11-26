@@ -1,0 +1,676 @@
+<?php
+
+namespace RTMKit\Modules;
+
+if (!defined('ABSPATH'))
+    exit;
+
+class Menu
+{
+    /**
+     * Item menu mendukung 'themebuilder_scope' => [tipe, ...]: halaman builder
+     * yang merender views/themebuilder.php hanya untuk tipe-tipe tersebut.
+     * Addon memeriksa konstanta ini sebelum memindahkan tipenya ke halaman sendiri.
+     */
+    const SUPPORTS_THEMEBUILDER_SCOPE = true;
+
+    /**
+     * Initialize the menu module.
+     */
+
+    protected static $instance;
+
+    protected $menus;
+    protected $menus_by_path;
+
+    public static function instance(): self
+    {
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    public function init()
+    {
+        if (\RTMKit\Core\Plugin::instance()->wizard_setup_check()) {
+            add_action('admin_menu', [$this, 'register_menu']);
+        }
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
+        add_action('admin_bar_menu', [$this, 'top_bar_menu'], 100);
+        add_action('admin_enqueue_scripts', [$this, 'feature_drawer_script']);
+        add_action('admin_footer', [$this, 'render_drawer_placeholder']);
+        add_action('wp_enqueue_scripts', [$this, 'feature_drawer_script']);
+        add_action('wp_footer', [$this, 'render_drawer_placeholder']);
+        add_action('wp_ajax_rtmkit_load_drawer', [$this, 'ajax_load_drawer']);
+    }
+
+    protected function default_menus(): array
+    {
+        $menus = [
+            'get_started' => [
+                'dashboard' => [
+                    'title' => __('Welcome', 'rometheme-for-elementor'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'rtmkit',
+                    'function' => [$this, 'rtmkit_root_page'],
+                    'icon_url' => RTM_KIT_URL . 'assets/images/romethemekit.svg',
+                    'position' => 20,
+                    'render_view' => RTM_KIT_DIR . 'views/dashboard.php',
+                ],
+            ],
+
+            'features' => [
+                'widgets' => [
+                    'title' => __('Widgets', 'rometheme-for-elementor'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'rtmkit&path=widgets',
+                    'function' => [$this, 'rtmkit_root_page'],
+                    'render_view' => RTM_KIT_DIR . 'views/widgets.php',
+                ],
+                'modules' => [
+                    'title' => __('Modules', 'rometheme-for-elementor'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'rtmkit&path=modules',
+                    'function' => [$this, 'rtmkit_root_page'],
+                    'render_view' => RTM_KIT_DIR . 'views/modules.php',
+                ],
+                'themebuilder' => [
+                    'title' => __('Theme Builder', 'rometheme-for-elementor'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'rtmkit&path=themebuilder',
+                    'function' => [$this, 'rtmkit_root_page'],
+                    'render_view' => RTM_KIT_DIR . 'views/themebuilder.php',
+                ],
+                'templates' => [
+                    'title' => __('Template Kits', 'rometheme-for-elementor'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'rtmkit&path=templates',
+                    'function' => [$this, 'rtmkit_root_page'],
+                    'render_view' => RTM_KIT_DIR . 'views/templates.php',
+                ],
+            ],
+
+            'settings' => [
+                'global-kit-setup' => [
+                    'title' => __('Global Kit Setup', 'rometheme-for-elementor'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'rtmkit&path=global-kit-setup',
+                    'function' => [$this, 'rtmkit_root_page'],
+                    'render_view' => RTM_KIT_DIR . 'views/settings.php',
+                ],
+                'updates' => [
+                    'title' => __('Version Controls', 'rometheme-for-elementor'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'rtmkit&path=updates',
+                    'function' => [$this, 'rtmkit_root_page'],
+                    'render_view' => RTM_KIT_DIR . 'views/updates.php',
+                ],
+            ],
+
+            'information' => [
+                'submission' => [
+                    'title' => __('Submissions', 'rometheme-for-elementor'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'rtmkit&path=submission',
+                    'function' => [$this, 'rtmkit_root_page'],
+                    'render_view' => RTM_KIT_DIR . 'views/submission.php',
+                ],
+                'system-status' => [
+                    'title' => __('System Info', 'rometheme-for-elementor'),
+                    'capability' => 'manage_options',
+                    'menu_slug' => 'rtmkit&path=system-status',
+                    'function' => [$this, 'rtmkit_root_page'],
+                    'render_view' => RTM_KIT_DIR . 'views/system-status.php',
+                ],
+                'help' => [
+                    'title' => __('Help & Center', 'rometheme-for-elementor'),
+                    'capability' => 'read',
+                    'menu_slug' => 'rtmkit&path=help',
+                    'function' => [$this, 'rtmkit_root_page'],
+                    'render_view' => RTM_KIT_DIR . 'views/help.php',
+                ],
+            ],
+        ];
+
+        return $menus;
+    }
+
+    /**
+     * Register the plugin menu in the WordPress admin.
+     */
+    public function register_menu()
+    {
+        $this->menus = $this->get_menus();
+        $sidebar_menu = ['dashboard', 'widgets', 'themebuilder', 'addons', 'templates', 'account', 'submission'];
+        add_menu_page(
+            __('RTMKit Dashboard', 'rometheme-for-elementor'),
+            __('RTMKit', 'rometheme-for-elementor'),
+            'manage_options',
+            'rtmkit',
+            [$this, 'rtmkit_root_page'],
+            RTM_KIT_URL . 'assets/images/romethemekit.svg',
+            20
+        );
+        foreach ($this->menus as $key => $menu) {
+            foreach ($menu as $sub_key => $sub_menu) {
+                if (!isset($sub_menu['target']) || $sub_menu['target'] !== '_blank') {
+                    if (in_array($sub_key, $sidebar_menu)) {
+                        add_submenu_page(
+                            'rtmkit',
+                            esc_html($sub_menu['title']),
+                            esc_html($sub_menu['title']),
+                            $sub_menu['capability'] ?? 'manage_options',
+                            $sub_menu['menu_slug'],
+                            $sub_menu['function'] ?? [$this, 'rtmkit_root_page'],
+                            $sub_menu['position'] ?? null
+                        );
+                    }
+                }
+            }
+        }
+        if (!\RTMKit\Core\Plugin::instance()->pro_is_active()) {
+            add_submenu_page(
+                'rtmkit',
+                'Upgrade to Pro',
+                '<svg width="20" height="20" viewBox="0 0 24 29" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.49698 9.00236L4.78398 19.9374H19.227L20.513 9.00236L16.503 11.6754L12.005 5.37836L7.50698 11.6754L3.49698 9.00236ZM2.80598 6.13736L7.00498 8.93736L11.191 3.07636C11.2835 2.94673 11.4056 2.84107 11.5472 2.76816C11.6888 2.69526 11.8457 2.65723 12.005 2.65723C12.1642 2.65723 12.3212 2.69526 12.4628 2.76816C12.6044 2.84107 12.7265 2.94673 12.819 3.07636L17.005 8.93636L21.205 6.13736C21.3639 6.03169 21.5497 5.97368 21.7404 5.97019C21.9312 5.96669 22.119 6.01785 22.2817 6.11762C22.4443 6.2174 22.575 6.36163 22.6584 6.53328C22.7417 6.70493 22.7742 6.89684 22.752 7.08636L21.11 21.0534C21.0816 21.2968 20.9647 21.5213 20.7817 21.6843C20.5986 21.8472 20.3621 21.9373 20.117 21.9374H3.89398C3.6489 21.9373 3.41236 21.8472 3.22931 21.6843C3.04625 21.5213 2.92941 21.2968 2.90098 21.0534L1.25798 7.08736C1.2354 6.89761 1.26767 6.70536 1.35095 6.53337C1.43424 6.36138 1.56506 6.21686 1.72792 6.11691C1.89079 6.01696 2.07889 5.96576 2.26995 5.96939C2.461 5.97301 2.64702 6.0313 2.80598 6.13736ZM12.006 15.9374C11.7433 15.9374 11.4833 15.8858 11.2406 15.7853C10.9979 15.6849 10.7774 15.5376 10.5916 15.3519C10.4059 15.1663 10.2585 14.9458 10.1579 14.7032C10.0573 14.4606 10.0055 14.2005 10.0055 13.9379C10.0054 13.6752 10.0571 13.4151 10.1575 13.1725C10.258 12.9298 10.4052 12.7093 10.5909 12.5235C10.7766 12.3377 10.997 12.1904 11.2397 12.0898C11.4823 11.9892 11.7423 11.9374 12.005 11.9374C12.5354 11.9374 13.0441 12.1481 13.4192 12.5231C13.7943 12.8982 14.005 13.4069 14.005 13.9374C14.005 14.4678 13.7943 14.9765 13.4192 15.3516C13.0441 15.7266 12.5364 15.9374 12.006 15.9374Z" fill="#121416"></path>
+            </svg> Upgrade to Pro',
+                'manage_options',
+                'rtmkit-upgrade-to-pro',
+                function () {
+                    // wp_safe_redirect() menolak host di luar situs ini dan
+                    // memulangkan pengguna ke wp-admin, jadi menu ini tidak
+                    // pernah sampai ke halaman pricing.
+                    wp_redirect(esc_url_raw(\RTMKit\Modules\Telemetry\UpgradeLink::url('admin_menu.upgrade')));
+                    exit;
+                },
+                null // posisi atas
+            );
+        }
+    }
+
+    /**
+     * Render the root page.
+     *
+     * Panel RTMKit dirender penuh oleh JS dan sengaja tidak memakai .wrap
+     * supaya latarnya rata tepi layar. Tapi WordPress memindahkan semua admin
+     * notice ke belakang .wp-header-end — dan kalau penanda itu tidak ada,
+     * notice-nya tertinggal di puncak #wpbody-content tanpa margin sama sekali.
+     *
+     * Jadi penandanya disediakan di kotak .wrap kosong di atas panel: notice
+     * mendarat di sana dengan margin wp-admin yang benar, sementara panelnya
+     * sendiri tidak ikut tergeser masuk 20px seperti kalau ia yang dibungkus.
+     */
+    public function rtmkit_root_page()
+    {
+        echo '<div class="wrap rtmkit-admin-notices"><hr class="wp-header-end"></div>';
+        echo '<div id="rtmkit-root" class="rtmkit-wrapper"></div>';
+    }
+
+    /**
+     * Enqueue scripts and styles for the plugin.
+     */
+    public function enqueue_scripts()
+    {
+        $screen = get_current_screen();
+        if (str_contains($screen->id, 'rtmkit')) {
+            // Bootstrap names its spacing and position utilities logically
+            // (ms-, pe-, start-) but implements them physically, so the default
+            // build never mirrors. Upstream ships a full RTL build for exactly
+            // this; serving it is the whole fix, and it costs LTR visitors
+            // nothing because only one of the two ever loads.
+            //
+            // rtmkit.min.css used to pull Bootstrap in with a CSS `@import`,
+            // which cannot make this choice. It is a dependency now instead,
+            // which keeps the same cascade order and drops a serial request.
+            wp_enqueue_style(
+                'rtmkit-bootstrap',
+                RTM_KIT_URL . 'assets/css/' . (is_rtl() ? 'bootstrap.rtl.min.css' : 'bootstrap.min.css'),
+                [],
+                '5.2.2'
+            );
+            wp_enqueue_style('rtmkit-style', RTM_KIT_URL . 'assets/css/rtmkit.min.css', ['rtmkit-bootstrap'], RTM_KIT_VERSION);
+            wp_enqueue_style('select2.min.css', RTM_KIT_URL . 'assets/css/select2.min.css', [], RTM_KIT_VERSION);
+            wp_enqueue_script('select2.min.js', RTM_KIT_URL . 'assets/js/select2.min.js', ['jquery'], RTM_KIT_VERSION, false);
+            wp_enqueue_script('bootstrap-js', RTM_KIT_URL . 'assets/js/bootstrap/bootstrap.min.js', [], RTM_KIT_VERSION, false);
+            wp_enqueue_script('scripts-js', RTM_KIT_URL . 'assets/js/scripts.js', ['jquery'], RTM_KIT_VERSION, true);
+            wp_enqueue_script('account-js', RTM_KIT_URL . 'assets/js/account.js', ['jquery'], RTM_KIT_VERSION, true);
+            wp_enqueue_script('addons-js', RTM_KIT_URL . 'assets/js/addons.js', ['jquery'], RTM_KIT_VERSION, true);
+            wp_enqueue_script('scrollspy-js', RTM_KIT_URL . 'assets/js/Scrollspy.js', [], RTM_KIT_VERSION, true);
+            wp_enqueue_script('rtmkit-admin-js', RTM_KIT_URL . 'build/index.js', ['wp-element'], RTM_KIT_VERSION);
+            wp_enqueue_script('scrollspy-js', RTM_KIT_URL . 'assets/js/Scrollspy.js', [], RTM_KIT_VERSION, true);
+            wp_enqueue_script('rtmkit-admin-js', RTM_KIT_URL . 'build/index.js', ['wp-element', 'wp-i18n'], RTM_KIT_VERSION);
+            // The admin app carries one translatable string; this is what makes
+            // its .json catalogue reachable from JS.
+            wp_set_script_translations('rtmkit-admin-js', 'rometheme-for-elementor', RTM_KIT_DIR . 'languages');
+            wp_localize_script('rtmkit-admin-js', 'rtmkit_ajax', [
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('rtmkit_nonce'),
+                'pluginUrl' => RTM_KIT_URL,
+                // Sama dengan yang di feature_drawer_script(): di halaman rtmkit
+                // kedua localize ini menulis variabel yang sama, jadi keduanya
+                // harus membawa field yang dipakai rtmkit-new-feature.js.
+                'upgrade_url' => \RTMKit\Modules\Telemetry\UpgradeLink::url('new_feature.upsell'),
+            ]);
+        }
+    }
+
+    public function get_menus()
+    {
+        if (!isset($this->menus)) {
+            $this->menus = apply_filters('rtmkit_menus', $this->default_menus());
+        }
+
+        return $this->menus;
+    }
+
+    protected function get_menus_by_path()
+    {
+        if (!isset($this->menus_by_path)) {
+            $this->menus_by_path = [];
+
+            foreach ($this->get_menus() as $group) {
+                foreach ($group as $path => $menu) {
+                    $this->menus_by_path[$path] = $menu;
+                }
+            }
+        }
+
+        return $this->menus_by_path;
+    }
+
+    public function top_bar_menu($wp_admin_bar)
+    {
+        // Parent
+        $wp_admin_bar->add_node([
+            'id' => 'rtmkit_menu_bar',
+            'title' => '<span>RTMkit</span>',
+            'href' => false,
+        ]);
+
+        // Submenu
+        $wp_admin_bar->add_node([
+            'id' => 'rtmkit_widgets',
+            'parent' => 'rtmkit_menu_bar',
+            'title' => esc_html__('Widgets', 'rometheme-for-elementor'),
+            'href' => admin_url('admin.php?page=rtmkit&path=widgets'),
+        ]);
+
+        $wp_admin_bar->add_node([
+            'id' => 'rtmkit_themebuilder',
+            'parent' => 'rtmkit_menu_bar',
+            'title' => esc_html__('Theme Builder', 'rometheme-for-elementor'),
+            'href' => admin_url('admin.php?page=rtmkit&path=themebuilder'),
+        ]);
+
+        $wp_admin_bar->add_node([
+            'id' => 'rtmkit_templates',
+            'parent' => 'rtmkit_menu_bar',
+            'title' => esc_html__('Templates Kits', 'rometheme-for-elementor'),
+            'href' => admin_url('admin.php?page=rtmkit&path=templates'),
+        ]);
+
+        $wp_admin_bar->add_node([
+            'id' => 'rtmkit_submission',
+            'parent' => 'rtmkit_menu_bar',
+            'title' => esc_html__('Submissions', 'rometheme-for-elementor'),
+            'href' => admin_url('admin.php?page=rtmkit&path=submission'),
+        ]);
+
+        $wp_admin_bar->add_node([
+            'id' => 'rtmkit_adminbar_divider',
+            'parent' => 'rtmkit_menu_bar',
+            'meta' => [
+                'class' => 'rtmkit-adminbar-divider'
+            ]
+        ]);
+
+        $wp_admin_bar->add_node([
+            'id' => 'rtmkit_documentation',
+            'parent' => 'rtmkit_menu_bar',
+            'title' => esc_html__('Documentation', 'rometheme-for-elementor'),
+            'href' => 'https://support.rometheme.net/docs/romethemekit/',
+            'meta' => [
+                'target' => '_blank',
+            ]
+        ]);
+
+        $wp_admin_bar->add_node([
+            'id' => 'rtmkit_rate_us',
+            'parent' => 'rtmkit_menu_bar',
+            'title' => '
+            <span class="rate-us-title">
+                Rate Us
+                <span class="rate-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M309.5-18.9c-4.1-8-12.4-13.1-21.4-13.1s-17.3 5.1-21.4 13.1L193.1 125.3 33.2 150.7c-8.9 1.4-16.3 7.7-19.1 16.3s-.5 18 5.8 24.4l114.4 114.5-25.2 159.9c-1.4 8.9 2.3 17.9 9.6 23.2s16.9 6.1 25 2L288.1 417.6 432.4 491c8 4.1 17.7 3.3 25-2s11-14.2 9.6-23.2L441.7 305.9 556.1 191.4c6.4-6.4 8.6-15.8 5.8-24.4s-10.1-14.9-19.1-16.3L383 125.3 309.5-18.9z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M309.5-18.9c-4.1-8-12.4-13.1-21.4-13.1s-17.3 5.1-21.4 13.1L193.1 125.3 33.2 150.7c-8.9 1.4-16.3 7.7-19.1 16.3s-.5 18 5.8 24.4l114.4 114.5-25.2 159.9c-1.4 8.9 2.3 17.9 9.6 23.2s16.9 6.1 25 2L288.1 417.6 432.4 491c8 4.1 17.7 3.3 25-2s11-14.2 9.6-23.2L441.7 305.9 556.1 191.4c6.4-6.4 8.6-15.8 5.8-24.4s-10.1-14.9-19.1-16.3L383 125.3 309.5-18.9z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M309.5-18.9c-4.1-8-12.4-13.1-21.4-13.1s-17.3 5.1-21.4 13.1L193.1 125.3 33.2 150.7c-8.9 1.4-16.3 7.7-19.1 16.3s-.5 18 5.8 24.4l114.4 114.5-25.2 159.9c-1.4 8.9 2.3 17.9 9.6 23.2s16.9 6.1 25 2L288.1 417.6 432.4 491c8 4.1 17.7 3.3 25-2s11-14.2 9.6-23.2L441.7 305.9 556.1 191.4c6.4-6.4 8.6-15.8 5.8-24.4s-10.1-14.9-19.1-16.3L383 125.3 309.5-18.9z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M309.5-18.9c-4.1-8-12.4-13.1-21.4-13.1s-17.3 5.1-21.4 13.1L193.1 125.3 33.2 150.7c-8.9 1.4-16.3 7.7-19.1 16.3s-.5 18 5.8 24.4l114.4 114.5-25.2 159.9c-1.4 8.9 2.3 17.9 9.6 23.2s16.9 6.1 25 2L288.1 417.6 432.4 491c8 4.1 17.7 3.3 25-2s11-14.2 9.6-23.2L441.7 305.9 556.1 191.4c6.4-6.4 8.6-15.8 5.8-24.4s-10.1-14.9-19.1-16.3L383 125.3 309.5-18.9z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M309.5-18.9c-4.1-8-12.4-13.1-21.4-13.1s-17.3 5.1-21.4 13.1L193.1 125.3 33.2 150.7c-8.9 1.4-16.3 7.7-19.1 16.3s-.5 18 5.8 24.4l114.4 114.5-25.2 159.9c-1.4 8.9 2.3 17.9 9.6 23.2s16.9 6.1 25 2L288.1 417.6 432.4 491c8 4.1 17.7 3.3 25-2s11-14.2 9.6-23.2L441.7 305.9 556.1 191.4c6.4-6.4 8.6-15.8 5.8-24.4s-10.1-14.9-19.1-16.3L383 125.3 309.5-18.9z"/></svg>
+                </span>
+            </span>
+            ',
+            'href' => 'https://wordpress.org/plugins/rometheme-for-elementor/#reviews',
+            'meta' => [
+                'target' => '_blank',
+                'class' => 'rtmkit-rate-us'
+            ]
+        ]);
+
+        if (!\RTMKit\Core\Plugin::instance()->pro_is_active()) {
+            $wp_admin_bar->add_node([
+                'id' => 'rtmkit_upgrade',
+                'parent' => 'rtmkit_menu_bar',
+                'title' => '<svg width="20" height="20" viewBox="0 0 24 29" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.49698 9.00236L4.78398 19.9374H19.227L20.513 9.00236L16.503 11.6754L12.005 5.37836L7.50698 11.6754L3.49698 9.00236ZM2.80598 6.13736L7.00498 8.93736L11.191 3.07636C11.2835 2.94673 11.4056 2.84107 11.5472 2.76816C11.6888 2.69526 11.8457 2.65723 12.005 2.65723C12.1642 2.65723 12.3212 2.69526 12.4628 2.76816C12.6044 2.84107 12.7265 2.94673 12.819 3.07636L17.005 8.93636L21.205 6.13736C21.3639 6.03169 21.5497 5.97368 21.7404 5.97019C21.9312 5.96669 22.119 6.01785 22.2817 6.11762C22.4443 6.2174 22.575 6.36163 22.6584 6.53328C22.7417 6.70493 22.7742 6.89684 22.752 7.08636L21.11 21.0534C21.0816 21.2968 20.9647 21.5213 20.7817 21.6843C20.5986 21.8472 20.3621 21.9373 20.117 21.9374H3.89398C3.6489 21.9373 3.41236 21.8472 3.22931 21.6843C3.04625 21.5213 2.92941 21.2968 2.90098 21.0534L1.25798 7.08736C1.2354 6.89761 1.26767 6.70536 1.35095 6.53337C1.43424 6.36138 1.56506 6.21686 1.72792 6.11691C1.89079 6.01696 2.07889 5.96576 2.26995 5.96939C2.461 5.97301 2.64702 6.0313 2.80598 6.13736ZM12.006 15.9374C11.7433 15.9374 11.4833 15.8858 11.2406 15.7853C10.9979 15.6849 10.7774 15.5376 10.5916 15.3519C10.4059 15.1663 10.2585 14.9458 10.1579 14.7032C10.0573 14.4606 10.0055 14.2005 10.0055 13.9379C10.0054 13.6752 10.0571 13.4151 10.1575 13.1725C10.258 12.9298 10.4052 12.7093 10.5909 12.5235C10.7766 12.3377 10.997 12.1904 11.2397 12.0898C11.4823 11.9892 11.7423 11.9374 12.005 11.9374C12.5354 11.9374 13.0441 12.1481 13.4192 12.5231C13.7943 12.8982 14.005 13.4069 14.005 13.9374C14.005 14.4678 13.7943 14.9765 13.4192 15.3516C13.0441 15.7266 12.5364 15.9374 12.006 15.9374Z" fill="#121416"></path>
+            </svg>' . 'Upgrade to Pro',
+                'href' => \RTMKit\Modules\Telemetry\UpgradeLink::url('adminbar.upgrade'),
+                'meta' => [
+                    'target' => '_blank',
+                    'class' => 'rtmkit-upgrade',
+                ],
+            ]);
+        }
+
+        // What's new
+        $wp_admin_bar->add_node([
+            'id' => 'rtmkit_whats_new_bar',
+            'title' => '<span>What\'s New</span>',
+            'href' => false,
+            'parent' => 'top-secondary',
+            'meta' => [
+                'class' => 'custom-drawer-trigger'
+            ]
+        ]);
+    }
+
+    /**
+     * Render drawer placeholder only
+     */
+    public function render_drawer_placeholder()
+    {
+        if (current_user_can('edit_posts')) {
+            echo '<div id="custom-drawer-overlay"></div>';
+            echo '<div id="custom-admin-drawer">';
+            echo '<div class="drawer-header">What\'s new on RTMKit</div>';
+            echo '<div class="drawer-content"></div>';
+            echo '</div>';
+        }
+    }
+
+    /**
+     * AJAX handler to load drawer content with RSS data
+     */
+    public function ajax_load_drawer()
+    {
+        check_ajax_referer('rtmkit_nonce', 'nonce');
+
+        if (!current_user_can('edit_posts')) {
+            wp_send_json_error(['message' => 'Unauthorized']);
+        }
+
+        $newsRSS = $this->get_rss_data('https://rometheme.net/blog/category/news/feed/');
+        $upsaleRSS = $this->get_rss_data('https://rometheme.net/blog/category/upsale/feed/');
+
+        $items = [];
+        $upsaleKeys = array_keys($upsaleRSS);
+
+        // Interleave news and upsale items
+        if (isset($newsRSS[0])) {
+            $items[] = $newsRSS[0];
+        }
+        if (isset($newsRSS[1])) {
+            $items[] = $newsRSS[1];
+        }
+        if (isset($upsaleRSS[0])) {
+            $items[] = $upsaleRSS[0];
+        }
+        if (isset($newsRSS[2])) {
+            $items[] = $newsRSS[2];
+        }
+        if (isset($upsaleRSS[1])) {
+            $items[] = $upsaleRSS[1];
+        }
+        if (isset($newsRSS[3])) {
+            $items[] = $newsRSS[3];
+        }
+        if (isset($newsRSS[4])) {
+            $items[] = $newsRSS[4];
+        }
+
+        $html = '';
+        $structuredItems = [];
+        foreach ($items as $item) {
+            // Cek apakah item dari upsale RSS
+            $isUpsale = in_array($item, $upsaleRSS, true);
+            $buttonLink = $isUpsale ? \RTMKit\Modules\Telemetry\UpgradeLink::url('menu.upsell') : $item['link'];
+            $buttonClass = $isUpsale ? 'upgrade-btn' : 'read-more';
+            $buttonText = $isUpsale ? 'Upgrade Now' : 'Learn More';
+            $buttonIcon = $isUpsale ? '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M3.49698 9.00236L4.78398 19.9374H19.227L20.513 9.00236L16.503 11.6754L12.005 5.37836L7.50698 11.6754L3.49698 9.00236ZM2.80598 6.13736L7.00498 8.93736L11.191 3.07636C11.2835 2.94673 11.4056 2.84107 11.5472 2.76816C11.6888 2.69526 11.8457 2.65723 12.005 2.65723C12.1642 2.65723 12.3212 2.69526 12.4628 2.76816C12.6044 2.84107 12.7265 2.94673 12.819 3.07636L17.005 8.93636L21.205 6.13736C21.3639 6.03169 21.5497 5.97368 21.7404 5.97019C21.9312 5.96669 22.119 6.01785 22.2817 6.11762C22.4443 6.2174 22.575 6.36163 22.6584 6.53328C22.7417 6.70493 22.7742 6.89684 22.752 7.08636L21.11 21.0534C21.0816 21.2968 20.9647 21.5213 20.7817 21.6843C20.5986 21.8472 20.3621 21.9373 20.117 21.9374H3.89398C3.6489 21.9373 3.41236 21.8472 3.22931 21.6843C3.04625 21.5213 2.92941 21.2968 2.90098 21.0534L1.25798 7.08736C1.2354 6.89761 1.26767 6.70536 1.35095 6.53337C1.43424 6.36138 1.56506 6.21686 1.72792 6.11691C1.89079 6.01696 2.07889 5.96576 2.26995 5.96939C2.461 5.97301 2.64702 6.0313 2.80598 6.13736ZM12.006 15.9374C11.7433 15.9374 11.4833 15.8858 11.2406 15.7853C10.9979 15.6849 10.7774 15.5376 10.5916 15.3519C10.4059 15.1663 10.2585 14.9458 10.1579 14.7032C10.0573 14.4606 10.0055 14.2005 10.0055 13.9379C10.0054 13.6752 10.0571 13.4151 10.1575 13.1725C10.258 12.9298 10.4052 12.7093 10.5909 12.5235C10.7766 12.3377 10.997 12.1904 11.2397 12.0898C11.4823 11.9892 11.7423 11.9374 12.005 11.9374C12.5354 11.9374 13.0441 12.1481 13.4192 12.5231C13.7943 12.8982 14.005 13.4069 14.005 13.9374C14.005 14.4678 13.7943 14.9765 13.4192 15.3516C13.0441 15.7266 12.5364 15.9374 12.006 15.9374Z" fill="#121416"></path></svg>' : '';
+
+            $html .= '<div class="news-item">';
+            $html .= '<h4 class="news-title">' . esc_html($item['title']) . '</h4>';
+            $html .= '<div class="featured-image">';
+            $html .= '<img src="' . esc_url($item['image']) . '" alt="">';
+            $html .= '<span class="news-category">' . esc_html($item['category']) . '</span>';
+            $html .= '</div>';
+            $html .= '<div class="news-description">' . esc_html($item['excerpt']) . '</div>';
+            $html .= '<div>';
+            $html .= '<a href="' . esc_url($buttonLink) . '" target="_blank" class="' . esc_attr($buttonClass) . '">' . wp_kses_post($buttonIcon) . esc_html($buttonText) . '</a>';
+            $html .= '</div>';
+            $html .= '</div>';
+
+            // Data terstruktur untuk disimpan di localStorage oleh JS
+            $structuredItems[] = [
+                'title' => $item['title'],
+                'link' => $item['link'],
+                'image' => $item['image'],
+                'excerpt' => $item['excerpt'],
+                'date' => $item['date'],
+                'category' => $item['category'],
+                'isUpsale' => $isUpsale,
+            ];
+        }
+
+        wp_send_json_success([
+            'html' => $html,
+            'items' => $structuredItems,
+        ]);
+    }
+
+    public function feature_drawer_script()
+    {
+        if (current_user_can('edit_posts')) {
+            wp_enqueue_style('rtmkit-new-features', RTM_KIT_URL . 'assets/css/rtmkit-new-feature.css', [], RTM_KIT_VERSION);
+            wp_enqueue_script('rtmkit-new-features', RTM_KIT_URL . 'assets/js/rtmkit-new-feature.js', [], RTM_KIT_VERSION, true);
+
+            // localize data yang dibutuhkan rtmkit-new-feature.js untuk fallback AJAX
+            // (rtmkit_ajax sudah ter-localize di enqueue_scripts(), tapi itu cuma
+            // jalan di halaman 'rtmkit'; drawer ini muncul di semua halaman admin,
+            // jadi perlu di-localize lagi khusus di sini)
+            wp_localize_script('rtmkit-new-features', 'rtmkit_ajax', [
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('rtmkit_nonce'),
+                // URL-nya dibentuk di PHP karena memuat kode situs dan versi plugin.
+                'upgrade_url' => \RTMKit\Modules\Telemetry\UpgradeLink::url('new_feature.upsell'),
+            ]);
+        }
+    }
+
+    /**
+     * Get inline script untuk load drawer via AJAX
+     */
+    private function get_drawer_loader_script()
+    {
+        $ajax_url = admin_url('admin-ajax.php');
+        $nonce = wp_create_nonce('rtmkit_nonce');
+
+        return <<<JS
+(function() {
+    let drawerLoaded = false;
+
+    function loadDrawerContent() {
+        if (drawerLoaded) return;
+        drawerLoaded = true;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '$ajax_url', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success && response.data.html) {
+                        const drawerContent = document.querySelector('#custom-admin-drawer .drawer-content');
+                        if (drawerContent) {
+                            drawerContent.innerHTML = response.data.html;
+                        }
+                    }
+                } catch (e) {
+                    console.error('Failed to parse drawer response:', e);
+                }
+            }
+        };
+        
+        const params = new URLSearchParams();
+        params.append('action', 'rtmkit_load_drawer');
+        params.append('nonce', '$nonce');
+        
+        xhr.send(params);
+    }
+
+    // Load drawer saat halaman selesai dimuat
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadDrawerContent);
+    } else {
+        loadDrawerContent();
+    }
+
+    // Atau load saat user klik drawer trigger
+    const drawerTrigger = document.querySelector('.custom-drawer-trigger');
+    if (drawerTrigger) {
+        drawerTrigger.addEventListener('click', loadDrawerContent);
+    }
+})();
+JS;
+    }
+
+    public function get_menu_by_path(string $path)
+    {
+        $menus = $this->get_menus_by_path();
+        return $menus[$path] ?? null;
+    }
+
+    private function get_rss_data($url)
+    {
+        $cache_key = 'rtmkit_rss_' . md5($url);
+        $cache_ttl = 6 * HOUR_IN_SECONDS;
+
+        $force_http11 = function ($handle) {
+            if (function_exists('curl_setopt') && defined('CURL_HTTP_VERSION_1_1')) {
+                curl_setopt($handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+                curl_setopt($handle, CURLOPT_FRESH_CONNECT, true);
+                curl_setopt($handle, CURLOPT_FORBID_REUSE, true);
+            }
+        };
+
+        add_action('http_api_curl', $force_http11);
+
+        $response = wp_remote_get($url, [
+            'timeout' => 15,
+            'sslverify' => true,
+            'httpversion' => '1.1', // paksa di level WP_Http juga
+            'headers' => [
+                'Connection' => 'close',
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            ],
+        ]);
+
+        remove_action('http_api_curl', $force_http11);
+
+        $http_code = is_wp_error($response) ? 0 : wp_remote_retrieve_response_code($response);
+
+        if (is_wp_error($response) || $http_code !== 200) {
+            $cached = get_transient($cache_key);
+            return $cached !== false ? $cached : [];
+        }
+
+        $body = wp_remote_retrieve_body($response);
+
+        if (empty($body)) {
+            $cached = get_transient($cache_key);
+            return $cached !== false ? $cached : [];
+        }
+
+        libxml_use_internal_errors(true);
+        $xml = simplexml_load_string($body, 'SimpleXMLElement', LIBXML_NOCDATA);
+
+        if (!$xml) {
+            $cached = get_transient($cache_key);
+            return $cached !== false ? $cached : [];
+        }
+
+        $data = [];
+        $items = $xml->channel->item ?? [];
+        $count = 0;
+
+        foreach ($items as $item) {
+
+            if ($count >= 5) {
+                break;
+            }
+
+            $media = $item->children('http://search.yahoo.com/mrss/');
+
+            $enclosure = null;
+            if (isset($item->enclosure)) {
+                $enclosure_attr = $item->enclosure->attributes();
+                $enclosure = [
+                    'url' => (string) ($enclosure_attr['url'] ?? ''),
+                    'type' => (string) ($enclosure_attr['type'] ?? ''),
+                    'length' => (string) ($enclosure_attr['length'] ?? ''),
+                ];
+            }
+
+            $media_url = '';
+            if (isset($media->content)) {
+                $media_attr = $media->content->attributes();
+                $media_url = (string) ($media_attr['url'] ?? '');
+            }
+
+            $content_ns = $item->children('http://purl.org/rss/1.0/modules/content/');
+            $content = isset($content_ns->encoded) ? (string) $content_ns->encoded : '';
+
+            $image = $media_url;
+            if (empty($image) && !empty($enclosure['url'])) {
+                $image = $enclosure['url'];
+            }
+            if (empty($image) && preg_match('/<img.*?src=["\'](.*?)["\']/i', $content, $match)) {
+                $image = $match[1];
+            }
+
+            $description = (string) $item->description;
+
+            $data[] = [
+                'title' => (string) $item->title,
+                'link' => (string) $item->link,
+                'image' => $image,
+                'description' => $description,
+                'excerpt' => wp_trim_words(wp_strip_all_tags($description), 30, '...'),
+                'date' => gmdate('F j, Y', strtotime((string) $item->pubDate)),
+                'content' => $content,
+                'category' => (is_array($item->category) && count($item->category) > 0)
+                    ? (string) $item->category[0]
+                    : (string) $item->category,
+            ];
+
+            $count++;
+        }
+
+        set_transient($cache_key, $data, $cache_ttl);
+
+        return $data;
+    }
+}

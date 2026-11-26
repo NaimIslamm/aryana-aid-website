@@ -1,0 +1,40 @@
+# WordPress Config & Local Debug Files
+wp-config.php
+local-xdebuginfo.php
+.tmb/
+scratch/
+
+# Backups & Archives
+wp-content/wpvividbackups/
+wp-content/backups_secure/
+wp-content/ai1wm-backups/
+wp-content/plugin_backups/
+wp-content/uploads_originals_backup/
+wp-content/wpvivid_staging/
+wp-content/wpvivid_uploads/
+wp-content/wpvivid_package_info.json
+*.zip
+*.tar
+*.tar.gz
+*.sql
+*.sql.gz
+
+# Media Uploads (excluded to keep repository lightweight & fast)
+wp-content/uploads/
+
+# Cache, Logs & Temp Files
+wp-content/litespeed/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/upgrade-temp-backup/
+wp-content/debug.log
+wp-content/.wp-object-cache-*
+wp-content/.sc_*
+error_log
+*.log
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
